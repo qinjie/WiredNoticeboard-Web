@@ -93,7 +93,15 @@ class MediaFileController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) ) {
+            $model->file = UploadedFile::getInstance($model, 'file');
+            $model->user_id = Yii::$app->user->identity->getId();
+            $model->extension = $model->file->extension;
+            if(!is_dir('uploads/'.$model->user_id.'/')) mkdir('uploads/'.$model->user_id.'/');
+            $demo = uniqid($model->user_id . "_");
+            $model->file_path = 'uploads/'.$model->user_id.'/'.$demo.'.'.$model->file->extension;
+            $model->file->saveAs($model->file_path);
+            $model->save();
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [

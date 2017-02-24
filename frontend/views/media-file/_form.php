@@ -13,17 +13,11 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-<!--    --><?//= $form->field($model, 'extension')->textInput(['maxlength' => true]) ?>
-
     <?= $form->field($model, 'duration')->textInput() ?>
 
     <?= $form->field($model, 'width')->textInput() ?>
 
     <?= $form->field($model, 'height')->textInput() ?>
-
-<!--    --><?//= $form->field($model, 'file_path')->textInput(['maxlength' => true]) ?>
-
-<!--    --><?//= $form->field($model, 'user_id')->textInput() ?>
 
     <?= $form->field($model, 'file')->widget(\kartik\file\FileInput::className(),
         [
