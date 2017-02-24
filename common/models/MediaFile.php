@@ -63,6 +63,7 @@ class MediaFile extends \yii\db\ActiveRecord
             'width' => 'Width',
             'height' => 'Height',
             'file_path' => 'File Path',
+            'file' => 'Image',
             'user_id' => 'User ID',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
