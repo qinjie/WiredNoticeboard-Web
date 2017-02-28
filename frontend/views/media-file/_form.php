@@ -19,17 +19,36 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'height')->textInput() ?>
 
-    <?= $form->field($model, 'file')->widget(\kartik\file\FileInput::className(),
-        [
+    <?php
+        if ($model->isNewRecord) {
+            echo $form->field($model, 'file')->widget(\kartik\file\FileInput::className(),
+                [
 
-            'options'=>[
-                'multiple'=>false
-            ],
-            'pluginOptions' => [
-                'uploadUrl' => Url::to(['/site/create']),
-                'showUpload' => false,
-            ]
-        ]);?>
+                    'options' => [
+                        'multiple' => false
+                    ],
+                    'pluginOptions' => [
+                        'uploadUrl' => Url::to(['/site/create']),
+                        'showUpload' => false,
+                    ]
+                ]);
+        }
+        else {
+            echo $form->field($model, 'file')->widget(\kartik\file\FileInput::className(),
+                [
+
+                    'options' => [
+                        'multiple' => false
+                    ],
+                    'pluginOptions' => [
+//                        'uploadUrl' => Url::to(['/site/create']),
+                        'showUpload' => false,
+                        'initialPreview'=> "../" . $model->file_path,
+                        'initialPreviewAsData'=>true,
+                    ]
+                ]);
+        }
+    ?>
 
 
 
