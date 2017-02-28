@@ -35,10 +35,12 @@ AppAsset::register($this);
         ],
     ]);
     $menuItems = [
-        ['label' => 'Home', 'url' => ['/site/index']],
-        ['label' => 'About', 'url' => ['/site/about']],
-        ['label' => 'Contact', 'url' => ['/site/contact']],
+//        ['label' => 'Home', 'url' => ['/site/index']],
+//        ['label' => 'About', 'url' => ['/site/about']],
+//        ['label' => 'Contact', 'url' => ['/site/contact']],
+        ['label' => 'Devices', 'url' => ['/device/index']],
         ['label' => 'Media Files', 'url' => ['/media-file/index']],
+        ['label' => 'Device Media', 'url' => ['/device-media/index']],
     ];
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];

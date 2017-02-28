@@ -4,19 +4,19 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel common\models\MediaFileSearch */
+/* @var $searchModel common\models\DeviceMediaSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Media Files';
+$this->title = 'Device Media';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="media-file-index">
+<div class="device-media-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Media File', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Device Media', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -25,18 +25,10 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'name',
-            'extension',
-            'duration',
-//            'width',
-            // 'height',
-            // 'file_path',
-
-            [
-                'attribute' => 'user_id',
-                'label' => 'Username',
-                'value' => 'user.username',
-            ],
+            'device_id',
+            'media_file_id',
+            'sequence',
+            'iteration',
             // 'created_at',
             // 'updated_at',
 
