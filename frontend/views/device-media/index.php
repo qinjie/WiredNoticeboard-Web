@@ -25,8 +25,19 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'device_id',
-            'media_file_id',
+
+            [
+                'attribute' => 'device_id',
+                'value' => 'device.name',
+                'label' => 'Device name'
+
+            ],
+            [
+                'attribute' => 'media_file_id',
+                'value' => 'mediaFile.name',
+                'label' => "Media file's name"
+            ],
+
             'sequence',
             'iteration',
             // 'created_at',

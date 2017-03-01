@@ -71,6 +71,15 @@ class MediaFile extends \yii\db\ActiveRecord
     }
 
     /**
+     * check if this is a video
+     */
+    public function isVideo(){
+        if ($this->extension == 'mp4') return true;
+        return false;
+
+    }
+
+    /**
      * @return \yii\db\ActiveQuery
      */
     public function getDeviceMedia()

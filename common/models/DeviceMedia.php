@@ -34,7 +34,7 @@ class DeviceMedia extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['device_id', 'media_file_id', 'sequence'], 'required'],
+            [['device_id', 'media_file_id', 'iteration'], 'required'],
             [['device_id', 'media_file_id', 'sequence', 'iteration'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
             [['device_id'], 'exist', 'skipOnError' => true, 'targetClass' => Device::className(), 'targetAttribute' => ['device_id' => 'id']],

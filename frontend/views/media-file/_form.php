@@ -25,7 +25,8 @@ use yii\widgets\ActiveForm;
                 [
 
                     'options' => [
-                        'multiple' => false
+                        'multiple' => false,
+                        'accept' => 'image/*,video/mp4'
                     ],
                     'pluginOptions' => [
                         'uploadUrl' => Url::to(['/site/create']),
@@ -38,10 +39,11 @@ use yii\widgets\ActiveForm;
                 [
 
                     'options' => [
-                        'multiple' => false
+                        'multiple' => false,
+                        'accept' => 'image/*,video/mp4'
                     ],
                     'pluginOptions' => [
-//                        'uploadUrl' => Url::to(['/site/create']),
+                        'uploadUrl' => Url::to(['/site/create']),
                         'showUpload' => false,
                         'initialPreview'=> "../" . $model->file_path,
                         'initialPreviewAsData'=>true,

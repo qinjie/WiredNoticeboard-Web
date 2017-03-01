@@ -35,10 +35,29 @@ $this->params['breadcrumbs'][] = $this->title;
             'width',
             'height',
             'file_path',
-            'user_id',
+//            'user_id',
+            [
+                'attribute' => 'user.username',
+                'label' => "Username"
+            ],
             'created_at',
             'updated_at',
         ],
     ]) ?>
+
+    <h3>Preview</h3>
+    <div align="center">
+        <?php
+            $src = "../../web/" . $model->file_path;
+            if ($model->isVideo()) {
+                echo '<video width="400" height="300" controls>
+                    <source src='. $src . '></video>';
+            }
+            else {
+                echo '<img src='.$src .'>';
+            }
+        ?>
+
+    </div>
 
 </div>
