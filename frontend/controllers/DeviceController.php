@@ -2,9 +2,11 @@
 
 namespace frontend\controllers;
 
+use common\models\DeviceMedia;
 use Yii;
 use common\models\Device;
 use common\models\DeviceSearch;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -51,8 +53,17 @@ class DeviceController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+
+        $devic = DeviceMedia::find()->where(['device_id' => $model->id]);
+        $device = new ActiveDataProvider([
+            'query' => $devic,
+            'pagination' => false,
+        ]);
+//        var_dump($model);
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'device' => $device,
+            'model' => $model,
         ]);
     }
 
@@ -95,6 +106,13 @@ class DeviceController extends Controller
                 'model' => $model,
             ]);
         }
+    }
+
+    /**
+     *
+     */
+    public function actionShow($id = 1){
+
     }
 
     /**

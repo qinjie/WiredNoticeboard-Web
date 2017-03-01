@@ -40,5 +40,28 @@ $this->params['breadcrumbs'][] = $this->title;
             'updated_at',
         ],
     ]) ?>
+    <?= \yii\grid\GridView::widget([
+        'dataProvider' => $device,
+//        'filterModel' => $searchModel,
+        'columns' => [
+            'id',
+
+            [
+                'attribute' => 'device_id',
+                'value' => 'device.name',
+                'label' => 'Device name'
+
+            ],
+            [
+                'attribute' => 'media_file_id',
+                'value' => 'mediaFile.name',
+                'label' => "Media file's name"
+            ],
+
+            'sequence',
+            'iteration',
+
+        ],
+    ]); ?>
 
 </div>
