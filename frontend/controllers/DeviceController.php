@@ -111,7 +111,13 @@ class DeviceController extends Controller
     /**
      *
      */
-    public function actionShow($id = 1){
+    public function actionShow($id){
+        $model = $this->findModel($id);
+        $device = DeviceMedia::find()->where(['device_id' => $model->id])->all();
+        return $this->render('show', [
+            'device' => $device,
+            'model' => $model,
+        ]);
 
     }
 
