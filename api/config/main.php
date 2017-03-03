@@ -65,7 +65,11 @@ return [
             'rules' => [
                 # API for ActiveRecords
                 ['class' => 'yii\rest\UrlRule', 'pluralize' => false,
-                    'controller' => ['v1/user', 'v1/location-history', 'v1/device-token'],
+                    'controller' => ['v1/device'],
+                    'tokens' => [
+                        # Keep 'id' for default CRUD action
+                        '{id}' => '<id:\\w+>',
+                    ],
                 ],
             ],
         ]

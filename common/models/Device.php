@@ -81,4 +81,9 @@ class Device extends \yii\db\ActiveRecord
     {
         return $this->hasMany(DeviceToken::className(), ['device_id' => 'id']);
     }
+
+    public function getMedia(){
+        return $this->hasMany(MediaFile::className(),['id' => 'media_file_id'])
+            ->viaTable('device_media', ['device_id' => 'id']);
+    }
 }
