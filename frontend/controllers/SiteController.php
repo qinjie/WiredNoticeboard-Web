@@ -1,7 +1,10 @@
 <?php
 namespace frontend\controllers;
 
+use common\components\AccessRule;
+use common\models\User;
 use Yii;
+use yii\base\Exception;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
@@ -27,12 +30,18 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout', 'signup'],
+                'ruleConfig' => [
+                    'class' => AccessRule::className(),
+                ],
                 'rules' => [
                     [
-                        'actions' => ['signup'],
+                        'actions' => ['login', 'request-password-reset', 'reset-password', 'error', 'signup'],
                         'allow' => true,
-                        'roles' => ['?'],
+                    ],
+                    [
+                        'actions' => ['index','change-password', 'account'],
+                        'allow' => true,
+                        'roles' => [\common\models\User::ROLE_CUSTOMER, \common\models\User::ROLE_ADMIN],
                     ],
                     [
                         'actions' => ['logout'],
@@ -129,6 +138,20 @@ class SiteController extends Controller
             return $this->render('contact', [
                 'model' => $model,
             ]);
+        }
+    }
+
+    /**
+     *
+     */
+    public function actionAccount()
+    {
+        try {
+            return $this->render('account', [
+                'model' => User::findOne(Yii::$app->user->identity->getId()),
+            ]);
+        } catch (Exception $e) {
+            throw new BadRequestHttpException($e->getMessage());
         }
     }
 

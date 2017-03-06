@@ -47,14 +47,26 @@ AppAsset::register($this);
             ['label' => 'Media Files', 'url' => ['/media-file/index']],
             ['label' => 'Device Media', 'url' => ['/device-media/index']],
         ];
-        $menuItems[] = '<li>'
-            . Html::beginForm(['/site/logout'], 'post')
-            . Html::submitButton(
-                'Logout (' . Yii::$app->user->identity->username . ')',
-                ['class' => 'btn btn-link logout']
-            )
-            . Html::endForm()
-            . '</li>';
+        $menuItems[] =[
+            'label' => 'Account (' . Yii::$app->user->identity->username . ')',
+            'items' => [
+                ['label' => 'Update my account',
+                    'url' => ['site/account'],
+                ],
+                ['label' => 'Logout',
+                    'url' => ['/site/logout'],
+                    'linkOptions' => ['data-method' => 'post']
+                ],
+            ],
+        ];
+//        $menuItems[] = '<li>'
+//            . Html::beginForm(['/site/logout'], 'post')
+//            . Html::submitButton(
+//                'Logout (' . Yii::$app->user->identity->username . ')',
+//                ['class' => 'btn btn-link logout']
+//            )
+//            . Html::endForm()
+//            . '</li>';
     }
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
