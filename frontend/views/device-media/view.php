@@ -29,8 +29,18 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'device_id',
-            'media_file_id',
+//            'device_id',
+            [
+                'attribute' => 'device_id',
+                'label' => 'Device Name',
+                'value' => $model->device->name
+            ],
+//            'media_file_id',
+            [
+                'attribute' => 'media_file_id',
+                'label' => 'Media Name',
+                'value' => $model->mediaFile->name,
+            ],
             'sequence',
             'iteration',
             'created_at',

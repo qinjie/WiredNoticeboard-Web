@@ -1,8 +1,6 @@
 <?php
-
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-
 /* @var $this yii\web\View */
 /* @var $model common\models\DeviceMedia */
 /* @var $form yii\widgets\ActiveForm */
@@ -12,17 +10,17 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'device_id')->textInput() ?>
+    <?= $form->field($model, 'device_id')->dropDownList(
+        \yii\helpers\ArrayHelper::map(\common\models\Device::find()->all(), 'id', 'name')
+    )->label("Device's name")
+    ?>
 
-    <?= $form->field($model, 'media_file_id')->textInput() ?>
-
-    <?= $form->field($model, 'sequence')->textInput() ?>
+    <?= $form->field($model, 'media_file_id')->dropDownList(
+        \yii\helpers\ArrayHelper::map(\common\models\MediaFile::find()->all(), 'id', 'name')
+    )->label("Media files's name")
+    ?>
 
     <?= $form->field($model, 'iteration')->textInput() ?>
-
-    <?= $form->field($model, 'created_at')->textInput() ?>
-
-    <?= $form->field($model, 'updated_at')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

@@ -79,8 +79,10 @@ class DeviceMediaController extends Controller
     public function actionCreate()
     {
         $model = new DeviceMedia();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            $sequence = DeviceMedia::find()->where(['device_id' => $model->device_id, 'media_file_id' => $model->media_file_id])->select('max(sequence)')->scalar();
+            $model->sequence = $sequence + 1;
+            $model->save();
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
