@@ -2,11 +2,14 @@
 
 namespace frontend\controllers;
 
+use common\components\AccessRule;
 use common\models\DeviceMedia;
 use Yii;
 use common\models\Device;
 use common\models\DeviceSearch;
 use yii\data\ActiveDataProvider;
+use yii\data\Sort;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -22,6 +25,19 @@ class DeviceController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'ruleConfig' => [
+                    'class' => AccessRule::className(),
+                ],
+                'rules' => [
+                    [
+                        'actions' => [],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -55,7 +71,7 @@ class DeviceController extends Controller
     {
         $model = $this->findModel($id);
 
-        $devic = DeviceMedia::find()->where(['device_id' => $model->id]);
+        $devic = DeviceMedia::find()->where(['device_id' => $model->id])->orderBy('sequence');
         $device = new ActiveDataProvider([
             'query' => $devic,
             'pagination' => false,
@@ -113,11 +129,30 @@ class DeviceController extends Controller
      */
     public function actionShow($id){
         $model = $this->findModel($id);
-        $device = DeviceMedia::find()->where(['device_id' => $model->id])->all();
+        $device = DeviceMedia::find()->where(['device_id' => $model->id])->orderBy('sequence')->all();
         return $this->render('show', [
             'device' => $device,
             'model' => $model,
         ]);
+
+    }
+
+    /**
+     *
+     */
+    public function actionSort(){
+        $request = Yii::$app->request;
+        $bodyParams = $request->bodyParams;
+        $id =  $bodyParams['id'];
+        $models =  $bodyParams['model'];
+        foreach ($models as $value => $item){
+            $model = DeviceMedia::findOne($item);
+            $model->sequence = $value +1;
+            $model->save();
+//            $value
+        }
+        return $this->redirect(['view', 'id' => $id]);
+//        var_dump($bodyParams);
 
     }
 

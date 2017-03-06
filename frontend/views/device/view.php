@@ -67,19 +67,5 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Change order', ['show', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
     </p>
 
-    <p>Look! The items are different heights but the transitions still work</p>
-    <ul class="slides">
-        <?php
-//        var_dump($device);
-            foreach ($device as $key => $value) {
-//                echo $value[0] . '\n';
-            }
-        ?>
-        <li class="slide slide1">Slide 1</li>
-        <li class="slide slide2">Slide 2</li>
-        <li class="slide slide3">Slide 3</li>
-        <li class="slide slide4">Slide 4</li>
-        <li class="slide slide5">Slide 5</li>
-    </ul>
 
 </div>

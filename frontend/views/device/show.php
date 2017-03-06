@@ -11,58 +11,63 @@ $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Devices', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<ul class="slides">
+
+<p>Please drag to change your sequence.</p>
+<ul class="block">
     <?php
          foreach ($device as $key => $value){
-    //         foreach ($value as $k => $item){
-    //             echo $item . "<br>";
-    //         }
-             echo '<li class="slide slide1">' .$value->sequence.'</li>';
-//             echo $value->sequence;
+             echo '<li class="slide slide1"  id= "'. $value->id .'">'.$value->sequence.  " - ". $value->mediaFile->name .'</li>';
          }
-
     ?>
 </ul>
+
+<button onclick="test()" class="btn btn-primary">Update order</button>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
 
 <script>
 
-    $(".slides").sortable({
-        placeholder: 'slide-placeholder',
-        axis: "y",
-        revert: 150,
-        start: function(e, ui){
+//    $('.block').sortable({update: sortOtherList});
+    $('.block').sortable({});
 
-            placeholderHeight = ui.item.outerHeight();
-            ui.placeholder.height(placeholderHeight + 15);
-            $('<div class="slide-placeholder-animator" data-height="' + placeholderHeight + '"></div>').insertAfter(ui.placeholder);
 
-        },
-        change: function(event, ui) {
+    function sortOtherList(){
 
-            ui.placeholder.stop().height(0).animate({
-                height: ui.item.outerHeight() + 15
-            }, 300);
+        $('.block li').each(function(){
 
-            placeholderAnimatorHeight = parseInt($(".slide-placeholder-animator").attr("data-height"));
+            $('.secondblock [data-block-id=' + $(this).attr('id') + ']')
+                .remove()
+                .appendTo($('.secondblock'));
 
-            $(".slide-placeholder-animator").stop().height(placeholderAnimatorHeight + 15).animate({
-                height: 0
-            }, 300, function() {
-                $(this).remove();
-                placeholderHeight = ui.item.outerHeight();
-                $('<div class="slide-placeholder-animator" data-height="' + placeholderHeight + '"></div>').insertAfter(ui.placeholder);
-            });
+        });
+    }
 
-        },
-        stop: function(e, ui) {
+    function test() {
+        var IDs = [];
+        var id = <?= $model->id ?>;
+//            alert(model);
+        $(".block").find("li").each(function(){ IDs.push(this.id); });
+//        alert(JSON.stringify(IDs));
+        $.ajax({
+            url: '../sort',
+            type: 'post',
+            data: {
+                model: IDs,
+                id: id
+//                status: $status
+            },
+            success: function (data) {
+//                alert(data);
+            },
+            error: function (jqXHR, errMsg) {
+                // handle error
+//                flag = false;
+//                alert(errMsg + $status + jqXHR);
+            }
+        });
 
-            $(".slide-placeholder-animator").remove();
 
-        },
-    });
-
+    }
 
 </script>
 
