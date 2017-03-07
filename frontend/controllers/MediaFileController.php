@@ -3,11 +3,14 @@
 namespace frontend\controllers;
 
 use common\components\AccessRule;
+use common\models\User;
 use Yii;
 use common\models\MediaFile;
 use common\models\MediaFileSearch;
+use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
@@ -51,13 +54,29 @@ class MediaFileController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new MediaFileSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        if (Yii::$app->user->identity->role == User::ROLE_ADMIN) {
+            $searchModel = new MediaFileSearch();
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        }
+        else {
+            $mediaFile = MediaFile::find()->where(['user_id' => Yii::$app->user->id]);
+            $mediaFileList = new ActiveDataProvider([
+                'query' => $mediaFile
+            ]);
+            $searchModel = new MediaFileSearch();
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+            $dataProvider = $mediaFileList;
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+
+        }
     }
 
     /**
@@ -67,9 +86,16 @@ class MediaFileController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+        $model = $this->findModel($id);
+        if (Yii::$app->user->id == $model->user_id  || Yii::$app->user->identity->role == User::ROLE_ADMIN){
+            return $this->render('view', [
+                'model' => $model,
+            ]);
+        }
+        else {
+            throw new ForbiddenHttpException('You are not allowed to edit this article.');
+        }
+
     }
 
     /**
@@ -109,22 +135,28 @@ class MediaFileController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) ) {
-            $model->file = UploadedFile::getInstance($model, 'file');
-            $model->user_id = Yii::$app->user->identity->getId();
-            $model->extension = $model->file->extension;
+        if (Yii::$app->user->id == $model->user_id  || Yii::$app->user->identity->role == User::ROLE_ADMIN){
+            if ($model->load(Yii::$app->request->post()) ) {
+                $model->file = UploadedFile::getInstance($model, 'file');
+                $model->user_id = Yii::$app->user->identity->getId();
+                $model->extension = $model->file->extension;
 //            if(!is_dir('uploads/'.$model->user_id.'/')) mkdir('uploads/'.$model->user_id.'/');
-            $demo = uniqid($model->user_id . "_");
-            $model->file_path = 'uploads/'.$demo.'.'.$model->file->extension;
+                $demo = uniqid($model->user_id . "_");
+                $model->file_path = 'uploads/'.$demo.'.'.$model->file->extension;
 //            $model->file_path = 'uploads/'.$model->user_id.'/'.$demo.'.'.$model->file->extension;
-            $model->file->saveAs($model->file_path);
-            $model->save();
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+                $model->file->saveAs($model->file_path);
+                $model->save();
+                return $this->redirect(['view', 'id' => $model->id]);
+            } else {
+                return $this->render('update', [
+                    'model' => $model,
+                ]);
+            }
         }
+        else {
+            throw new ForbiddenHttpException('You are not allowed to edit this article.');
+        }
+
     }
 
     /**
@@ -135,9 +167,14 @@ class MediaFileController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+        $model = $this->findModel($id);
+        if (Yii::$app->user->id == $model->user_id  || Yii::$app->user->identity->role == User::ROLE_ADMIN){
+            $model->delete();
+            return $this->redirect(['index']);
+        }
+        else {
+            throw new ForbiddenHttpException('You are not allowed to delete this article.');
+        }
     }
 
     /**

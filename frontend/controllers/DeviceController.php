@@ -4,6 +4,7 @@ namespace frontend\controllers;
 
 use common\components\AccessRule;
 use common\models\DeviceMedia;
+use common\models\User;
 use Yii;
 use common\models\Device;
 use common\models\DeviceSearch;
@@ -11,6 +12,7 @@ use yii\data\ActiveDataProvider;
 use yii\data\Sort;
 use yii\filters\AccessControl;
 use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -53,13 +55,30 @@ class DeviceController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new DeviceSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        if (Yii::$app->user->identity->role == User::ROLE_ADMIN){
+            $searchModel = new DeviceSearch();
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        }
+        else {
+            $Device = Device::find()->where(['user_id' => Yii::$app->user->id]);
+            $deviceList = new ActiveDataProvider([
+                'query' => $Device
+            ]);
+            $searchModel = new DeviceSearch();
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+            $dataProvider = $deviceList;
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+
+        }
+
     }
 
     /**
@@ -70,17 +89,22 @@ class DeviceController extends Controller
     public function actionView($id)
     {
         $model = $this->findModel($id);
+        if (Yii::$app->user->id == $model->user_id  || Yii::$app->user->identity->role == User::ROLE_ADMIN){
 
-        $devic = DeviceMedia::find()->where(['device_id' => $model->id])->orderBy('sequence');
-        $device = new ActiveDataProvider([
-            'query' => $devic,
-            'pagination' => false,
-        ]);
-//        var_dump($model);
-        return $this->render('view', [
-            'device' => $device,
-            'model' => $model,
-        ]);
+            $devic = DeviceMedia::find()->where(['device_id' => $model->id])->orderBy('sequence');
+            $device = new ActiveDataProvider([
+                'query' => $devic,
+                'pagination' => false,
+            ]);
+    //        var_dump($model);
+            return $this->render('view', [
+                'device' => $device,
+                'model' => $model,
+            ]);
+        }
+        else {
+            throw new ForbiddenHttpException('You are not allowed to edit this article.');
+        }
     }
 
     /**
@@ -112,15 +136,19 @@ class DeviceController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post())) {
-            $model->user_id = Yii::$app->user->identity->getId();
-            $model->save();
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+        if (Yii::$app->user->id == $model->user_id  || Yii::$app->user->identity->role == User::ROLE_ADMIN){
+            if ($model->load(Yii::$app->request->post())) {
+                $model->user_id = Yii::$app->user->identity->getId();
+                $model->save();
+                return $this->redirect(['view', 'id' => $model->id]);
+            } else {
+                return $this->render('update', [
+                    'model' => $model,
+                ]);
+            }
+        }
+        else {
+            throw new ForbiddenHttpException('You are not allowed to edit this article.');
         }
     }
 
@@ -129,12 +157,16 @@ class DeviceController extends Controller
      */
     public function actionShow($id){
         $model = $this->findModel($id);
-        $device = DeviceMedia::find()->where(['device_id' => $model->id])->orderBy('sequence')->all();
-        return $this->render('show', [
-            'device' => $device,
-            'model' => $model,
-        ]);
-
+        if (Yii::$app->user->id == $model->user_id  || Yii::$app->user->identity->role == User::ROLE_ADMIN){
+            $device = DeviceMedia::find()->where(['device_id' => $model->id])->orderBy('sequence')->all();
+            return $this->render('show', [
+                'device' => $device,
+                'model' => $model,
+            ]);
+        }
+        else {
+            throw new ForbiddenHttpException('You are not allowed to edit this article.');
+        }
     }
 
     /**
@@ -164,9 +196,15 @@ class DeviceController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        if (Yii::$app->user->id == $model->user_id  || Yii::$app->user->identity->role == User::ROLE_ADMIN){
+            $model->delete();
+            return $this->redirect(['index']);
+        }
+        else {
+            throw new ForbiddenHttpException('You are not allowed to delete this article.');
+        }
 
-        return $this->redirect(['index']);
     }
 
     /**
