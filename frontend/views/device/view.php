@@ -31,6 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'name',
             'remark',
+            'token',
 //            'user_id',
             [
                 'attribute' => 'user.username',

@@ -37,6 +37,7 @@ class Device extends \yii\db\ActiveRecord
             [['name', 'user_id'], 'required'],
             [['user_id'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
+            [['token'], 'safe'],
             [['name'], 'string', 'max' => 25],
             [['remark'], 'string', 'max' => 200],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
