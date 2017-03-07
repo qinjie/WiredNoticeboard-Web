@@ -54,29 +54,17 @@ class MediaFileController extends Controller
      */
     public function actionIndex()
     {
+        $searchModel = new MediaFileSearch();
         if (Yii::$app->user->identity->role == User::ROLE_ADMIN) {
-            $searchModel = new MediaFileSearch();
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-            return $this->render('index', [
-                'searchModel' => $searchModel,
-                'dataProvider' => $dataProvider,
-            ]);
         }
         else {
-            $mediaFile = MediaFile::find()->where(['user_id' => Yii::$app->user->id]);
-            $mediaFileList = new ActiveDataProvider([
-                'query' => $mediaFile
-            ]);
-            $searchModel = new MediaFileSearch();
-            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-            $dataProvider = $mediaFileList;
-            return $this->render('index', [
-                'searchModel' => $searchModel,
-                'dataProvider' => $dataProvider,
-            ]);
-
+            $dataProvider = $searchModel->NewSearch(Yii::$app->request->queryParams, Yii::$app->user->id);
         }
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
     }
 
     /**

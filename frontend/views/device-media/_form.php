@@ -11,12 +11,12 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'device_id')->dropDownList(
-        \yii\helpers\ArrayHelper::map(\common\models\Device::find()->all(), 'id', 'name')
+        \yii\helpers\ArrayHelper::map(\common\models\Device::find()->where(['user_id' => Yii::$app->user->id])->all(), 'id', 'name')
     )->label("Device's name")
     ?>
 
     <?= $form->field($model, 'media_file_id')->dropDownList(
-        \yii\helpers\ArrayHelper::map(\common\models\MediaFile::find()->all(), 'id', 'name')
+        \yii\helpers\ArrayHelper::map(\common\models\MediaFile::find()->where(['user_id' => Yii::$app->user->id])->all(), 'id', 'name')
     )->label("Media files's name")
     ?>
 

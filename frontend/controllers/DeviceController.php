@@ -55,29 +55,17 @@ class DeviceController extends Controller
      */
     public function actionIndex()
     {
+        $searchModel = new DeviceSearch();
         if (Yii::$app->user->identity->role == User::ROLE_ADMIN){
-            $searchModel = new DeviceSearch();
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-            return $this->render('index', [
-                'searchModel' => $searchModel,
-                'dataProvider' => $dataProvider,
-            ]);
         }
         else {
-            $Device = Device::find()->where(['user_id' => Yii::$app->user->id]);
-            $deviceList = new ActiveDataProvider([
-                'query' => $Device
-            ]);
-            $searchModel = new DeviceSearch();
-            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-            $dataProvider = $deviceList;
-            return $this->render('index', [
-                'searchModel' => $searchModel,
-                'dataProvider' => $dataProvider,
-            ]);
-
+            $dataProvider = $searchModel->newSearch(Yii::$app->request->queryParams, Yii::$app->user->id);
         }
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
 
     }
 
