@@ -4,6 +4,7 @@ namespace frontend\controllers;
 
 use common\components\AccessRule;
 use common\models\DeviceMedia;
+use common\models\MediaFile;
 use common\models\User;
 use Yii;
 use common\models\Device;
@@ -15,6 +16,7 @@ use yii\web\Controller;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * DeviceController implements the CRUD actions for Device model.
@@ -209,5 +211,21 @@ class DeviceController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    public function actionAdd($id){
+        $model = new DeviceMedia();
+        if ($model->load(Yii::$app->request->post())) {
+            $sequence = DeviceMedia::find()->where(['device_id' => $model->device_id])->select('max(sequence)')->scalar();
+            $model->sequence = $sequence + 1;
+            $model->save();
+            return $this->redirect(['view', 'id' => $id]);
+        } else {
+            return $this->render('add', [
+                'model' => $model,
+                'device' => $id
+            ]);
+        }
+
     }
 }

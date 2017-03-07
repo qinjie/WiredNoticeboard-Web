@@ -101,40 +101,6 @@ class UserController extends CustomActiveController
 
     }
 
-    public function actionLoginEmail(){
-        $request = Yii::$app->request;
-        $bodyParams = $request->bodyParams;
-        $email = $bodyParams['email'];
-        $model = User::findOne(['email' => $email]);
-        if(($model)){
-            $user = $model;
-
-            if ($user->status == User::STATUS_ACTIVE) {
-                UserToken::deleteAll(['user_id' => $user->id]);
-                $token = TokenHelper::createUserToken($user->id);
-                return [
-                    'result' => "correct",
-                    'user_id' => $user->id,
-                    'username' => $user->username,
-                    'email' => $user->email,
-                    'token' => $token->token,
-                ];
-            }
-//            else throw new BadRequestHttpException(null);
-            else
-                return [
-                "result"=> "wrong"
-            ];
-        } else {
-            return [
-                "result"=> "wrong"
-            ];
-//            throw new BadRequestHttpException('Invalid data');
-//            return null;
-        }
-//        throw new BadRequestHttpException('Invalid data');
-    }
-
     public function actionLogout(){
         $id = Yii::$app->user->id;
         UserToken::deleteAll(['user_id' => $id]);

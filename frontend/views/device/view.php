@@ -57,14 +57,29 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => 'mediaFile.name',
                 'label' => "Media file's name"
             ],
-
-
             'iteration',
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'header' => 'Action',
+                'template' => '{delete}',
+                'buttons' => [
+                    'delete' => function ($url, $model) {
+                        $url = \yii\helpers\Url::to(['device-media/delete', 'id' => $model->id]);
+//                        return Html::a('<span class="fa fa-eye"></span>', $url, ['title' => 'view']);
+                        return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
+                            'title' => Yii::t('yii', 'Delete'),
+                            'data-confirm' => Yii::t('yii', 'Are you sure to delete this item?'),
+                            'data-method' => 'post',
+                        ]);
+                    },
+                ]
+            ],
 
         ],
     ]); ?>
     <p>
         <?= Html::a('Change order', ['show', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Add media file', ['add', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
     </p>
 
 
