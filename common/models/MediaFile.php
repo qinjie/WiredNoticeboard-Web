@@ -28,6 +28,7 @@ class MediaFile extends \yii\db\ActiveRecord
      */
 
     public $file;
+    public $iteration;
 
     public static function tableName()
     {
@@ -69,6 +70,17 @@ class MediaFile extends \yii\db\ActiveRecord
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
+    }
+
+    public function fields()
+    {
+        $new = [
+            'link' => function ($model) {
+                return "http://128.199.93.67/WiredNoticeboard-Web/frontend/web/" . $model->file_path;
+            },
+        ];
+        $fields = array_merge(parent::fields(), $new);
+        return $fields;
     }
 
     /**

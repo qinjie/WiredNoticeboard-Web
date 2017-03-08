@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
+//            'id',
             'name',
             'remark',
             'token',
@@ -41,7 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'updated_at',
         ],
     ]) ?>
-    <h2><?= Html::encode("Current order") ?></h2>
+    <h2><?= Html::encode("Play order") ?></h2>
     <?= \yii\grid\GridView::widget([
         'dataProvider' => $device,
         'columns' => [

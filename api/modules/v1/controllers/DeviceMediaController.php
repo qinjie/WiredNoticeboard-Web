@@ -9,6 +9,7 @@
 namespace api\modules\v1\controllers;
 
 
+use api\common\models\DeviceMedia;
 use api\components\CustomActiveController;
 use common\components\AccessRule;
 use yii\filters\AccessControl;
@@ -57,6 +58,19 @@ class DeviceMediaController extends CustomActiveController
         ];
 
         return $behaviors;
+    }
+
+    public function actionGetMedia(){
+        $request = \Yii::$app->request;
+        $bodyParams = $request->bodyParams;
+        $device_id = $bodyParams['device_id'];
+        $listMedia = DeviceMedia::find()->where(['device_id' => $device_id])->orderBy('sequence')->all();
+        $list = [];
+        foreach ($listMedia as $value){
+            $list [] = $value->mediaFile;
+        }
+//        return $list;
+        return $listMedia;
     }
 
 }

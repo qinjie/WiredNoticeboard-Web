@@ -134,6 +134,10 @@ body {
     text-align: center;
     color: #FFF;
     border: 2px solid #444;
+    width: 360px;
+    height: 130px;
+
+
 }
 
 .slide-placeholder {

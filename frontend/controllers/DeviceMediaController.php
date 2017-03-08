@@ -119,6 +119,7 @@ class DeviceMediaController extends Controller
     public function actionDelete($id)
     {
         $device_media = $this->findModel($id);
+        $device_media->delete();
         $device_order = DeviceMedia::find()->where(['device_id' => $device_media->device_id])->orderBy('sequence')->all();
         $sequence = 1;
         foreach ($device_order as $item => $value){
@@ -127,8 +128,8 @@ class DeviceMediaController extends Controller
             $sequence++;
             $value->save();
         }
-        return true;
-        $device_media->delete();
+//        return true;
+
         return $this->redirect(Yii::$app->request->referrer);
 //        redirect(['index']);
     }
