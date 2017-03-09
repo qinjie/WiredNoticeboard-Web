@@ -45,7 +45,7 @@ AppAsset::register($this);
 //        ['label' => 'Contact', 'url' => ['/site/contact']],
             ['label' => 'Devices', 'url' => ['/device/index']],
             ['label' => 'Media Files', 'url' => ['/media-file/index']],
-            ['label' => 'Device Media', 'url' => ['/device-media/index']],
+//            ['label' => 'Device Media', 'url' => ['/device-media/index']],
         ];
         $menuItems[] =[
             'label' => 'Account (' . Yii::$app->user->identity->username . ')',

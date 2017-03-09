@@ -102,8 +102,17 @@ class MediaFileController extends Controller
 //            if(!is_dir('uploads/'.$model->user_id.'/')) mkdir('uploads/'.$model->user_id.'/');
             $demo = uniqid($model->user_id . "_");
             $model->file_path = 'uploads/'.$demo.'.'.$model->file->extension;
-//            $model->file_path = 'uploads/'.$model->user_id.'/'.$demo.'.'.$model->file->extension;
             $model->file->saveAs($model->file_path);
+            var_dump($this->getDuration($model->file_path));
+            return;
+            if ($model->isVideo()){
+                $model->width = 640;
+                $model->height = 480;
+            }
+            else {
+                $model->width = getimagesize($model->file_path)[0];
+                $model->height = getimagesize($model->file_path)[1];
+            }
             $model->save();
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -128,11 +137,18 @@ class MediaFileController extends Controller
                 $model->file = UploadedFile::getInstance($model, 'file');
                 $model->user_id = Yii::$app->user->identity->getId();
                 $model->extension = $model->file->extension;
-//            if(!is_dir('uploads/'.$model->user_id.'/')) mkdir('uploads/'.$model->user_id.'/');
                 $demo = uniqid($model->user_id . "_");
                 $model->file_path = 'uploads/'.$demo.'.'.$model->file->extension;
-//            $model->file_path = 'uploads/'.$model->user_id.'/'.$demo.'.'.$model->file->extension;
                 $model->file->saveAs($model->file_path);
+                if ($model->isVideo()){
+                    $model->width = 640;
+                    $model->height = 480;
+
+                }
+                else {
+                    $model->width = getimagesize($model->file_path)[0];
+                    $model->height = getimagesize($model->file_path)[1];
+                }
                 $model->save();
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {
@@ -216,4 +232,31 @@ class MediaFileController extends Controller
             $imgt($new_image, $uploadsPath.$thumb_before_word.$imgName);
         }
     }
+
+    function getDuration($file){
+        if (file_exists($file)){
+            ## open and read video file
+            $handle = fopen($file, "r");
+## read video file size
+            $contents = fread($handle, filesize($file));
+            fclose($handle);
+            $make_hexa = hexdec(bin2hex(substr($contents,strlen($contents)-3)));
+
+//            if (strlen($contents) > $make_hexa){
+                $pre_duration = hexdec(bin2hex(substr($contents,strlen($contents)-$make_hexa,3))) ;
+                $post_duration = $pre_duration/1000;
+                $timehours = $post_duration/3600;
+                $timeminutes =($post_duration % 3600)/60;
+                $timeseconds = ($post_duration % 3600) % 60;
+                $timehours = explode(".", $timehours);
+                $timeminutes = explode(".", $timeminutes);
+                $timeseconds = explode(".", $timeseconds);
+                $duration = $timehours[0]. ":" . $timeminutes[0]. ":" . $timeseconds[0];}
+            return $duration;
+//        }
+//        else {
+//            return false;
+//        }
+    }
+
 }

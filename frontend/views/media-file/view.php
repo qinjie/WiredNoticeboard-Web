@@ -50,7 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php
             $src = "../../web/" . $model->file_path;
             if ($model->isVideo()) {
-                echo '<video width="400" height="300" controls>
+                echo '<video width="640" height="480" controls>
                     <source src='. $src . '></video>';
             }
             else {
