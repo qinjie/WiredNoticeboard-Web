@@ -16,7 +16,10 @@ $this->params['breadcrumbs'][] = $this->title;
 <ul class="block">
     <?php
          foreach ($device as $key => $value){
-             echo '<li class="slide slide1"  id= "'. $value->id .'">'.$value->sequence.  " - ". $value->mediaFile->name .'</li>';
+             echo '<li class="slide slide1"  id= "'. $value->id .'">'
+                 ."<p>"
+                 .$value->sequence.  " - ". $value->mediaFile->name .
+                 '</p></li>';
          }
     ?>
 </ul>

@@ -42,8 +42,8 @@ class MediaFile extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'extension', 'file_path', 'user_id'], 'required'],
-            [['duration', 'width', 'height', 'user_id'], 'integer'],
-            [['created_at', 'updated_at'], 'safe'],
+            [['width', 'height', 'user_id'], 'integer'],
+            [['created_at', 'updated_at', 'duration'], 'safe'],
             [['name'], 'string', 'max' => 50],
             [['extension'], 'string', 'max' => 10],
             [['file_path'], 'string', 'max' => 100],
