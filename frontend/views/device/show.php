@@ -15,12 +15,24 @@ $this->params['breadcrumbs'][] = $this->title;
 <p>Please drag to change your sequence.</p>
 <ul class="block">
     <?php
-         foreach ($device as $key => $value){
-             echo '<li class="slide slide1"  id= "'. $value->id .'">'
-                 ."<p>"
-                 .$value->sequence.  " - ". $value->mediaFile->name .
-                 '</p></li>';
-         }
+    foreach ($device as $key => $value){
+        if ($value->mediaFile->isVideo()) $src ='http://www.free-icons-download.net/images/mp4-file-icon-44048.png';
+        else $src = "../../".$value->mediaFile->file_path;
+        echo '<li class="slide slide1"  id= "'. $value->id .'">';
+        echo "<div class='show'>"
+             . "<img class='show' width='100' height='100' src=".$src.">"
+              ."<a>"
+            .$value->sequence.  ". ". $value->mediaFile->name
+            ."</a><h6>Created at: "
+            .$value->mediaFile->created_at
+
+            ."</h6><h6>"
+            . $value->iteration
+            ."</h6><br>"
+            . $value->mediaFile->duration
+            .'</h6></div>
+            </li>';
+    }
     ?>
 </ul>
 
@@ -34,16 +46,16 @@ $this->params['breadcrumbs'][] = $this->title;
     $('.block').sortable({});
 
 
-    function sortOtherList(){
-
-        $('.block li').each(function(){
-
-            $('.secondblock [data-block-id=' + $(this).attr('id') + ']')
-                .remove()
-                .appendTo($('.secondblock'));
-
-        });
-    }
+//    function sortOtherList(){
+//
+//        $('.block li').each(function(){
+//
+//            $('.secondblock [data-block-id=' + $(this).attr('id') + ']')
+//                .remove()
+//                .appendTo($('.secondblock'));
+//
+//        });
+//    }
 
     function test() {
         var IDs = [];

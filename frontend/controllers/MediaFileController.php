@@ -100,7 +100,10 @@ class MediaFileController extends Controller
             $model->user_id = Yii::$app->user->identity->getId();
             $model->extension = $model->file->extension;
             $demo = uniqid($model->user_id . "_");
-            $model->duration = gmdate("H:i:s", $model->duration);
+            if ($model->isVideo())
+                $model->duration = gmdate("H:i:s", $model->duration);
+            else
+                $model->duration = gmdate("H:i:s", 1);
             $model->file_path = 'uploads/'.$demo.'.'.$model->file->extension;
             $model->file->saveAs($model->file_path);
 //            var_dump($this->getDuration($model->file_path));
@@ -138,7 +141,10 @@ class MediaFileController extends Controller
                 $model->user_id = Yii::$app->user->identity->getId();
                 $model->extension = $model->file->extension;
                 $demo = uniqid($model->user_id . "_");
-                $model->duration = gmdate("H:i:s", $model->duration);
+                if ($model->isVideo())
+                    $model->duration = gmdate("H:i:s", $model->duration);
+                else
+                    $model->duration = gmdate("H:i:s", 1);
                 $model->file_path = 'uploads/'.$demo.'.'.$model->file->extension;
                 $model->file->saveAs($model->file_path);
                 if ($model->isVideo()){
