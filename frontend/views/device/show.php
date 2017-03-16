@@ -13,34 +13,92 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <p>Please drag to change your sequence.</p>
-<ul class="block">
-    <?php
-    foreach ($device as $key => $value){
-        if ($value->mediaFile->isVideo()) $src ='http://www.free-icons-download.net/images/mp4-file-icon-44048.png';
-        else $src = "../../".$value->mediaFile->file_path;
-        echo '<li class="slide slide1"  id= "'. $value->id .'">';
-        echo "<div class='show'>"
-             . "<img class='show' width='100' height='100' src=".$src.">"
-              ."<a>"
-            .$value->sequence.  ". ". $value->mediaFile->name
-            ."</a><h6>Created at: "
-            .$value->mediaFile->created_at
-
-            ."</h6><h6>"
-            . $value->iteration
-            ."</h6><br>"
-            . $value->mediaFile->duration
-            .'</h6></div>
-            </li>';
-    }
-    ?>
-</ul>
-
+<div class="row">
+    <div class="col-md-6">
+    <ul class="block">
+        <?php
+        foreach ($device as $key => $value){
+            if ($value->mediaFile->isVideo()) {
+                $src ='http://www.free-icons-download.net/images/mp4-file-icon-44048.png';
+                echo '<li class="slide slide1"  id= "'. $value->id .'">';
+                echo "<div class='show row'>
+                        <div class='col-md-5'>
+                            <a id ='media_".$value->id."' onclick='handleClick(".$value->id.")' data-type='video' data-url='"."../../".$value->mediaFile->file_path. "'>
+                                <img  width='100' height='100' src=".$src.">
+                            </a>
+                        </div>
+                        <div class='col-md-7'>
+                            <a href='../../media-file/view?id=".$value->id."'>"
+                    .$value->sequence.  ". ". $value->mediaFile->name
+                    ."</a>
+                             <div>Created at: " .$value->mediaFile->created_at
+                    ."</div>
+                            <div>Iteration: "
+                    . $value->iteration
+                    ."</div>
+                            <div>Showing time: "
+                    . $value->mediaFile->duration
+                    .'</div>
+                        </div>
+                    </div>
+                </li>';
+            }
+            else {
+                $src = Html::encode("../../".$value->mediaFile->file_path);
+                echo '<li class="slide slide1"  id= "'. $value->id .'">';
+                echo "<div class='show row'>
+                        <div class='col-md-5'>
+                            <a id ='media_".$value->id."' onclick='handleClick(".$value->id.")' data-type='img' data-url='".$src. "'>
+                                <img  width='100' height='100' src=".$src.">
+                            </a>
+                        </div>
+                        <div class='col-md-7'>
+                            <a href='../../media-file/view?id=".$value->id."'>"
+                    .$value->sequence.  ". ". $value->mediaFile->name
+                    ."</a>
+                             <div>Created at: " .$value->mediaFile->created_at
+                    ."</div>
+                            <div>Iteration: "
+                    . $value->iteration
+                    ."</div>
+                            <div>Showing time: "
+                    . $value->mediaFile->duration
+                    .'</div>
+                        </div>
+                    </div>
+                </li>';
+            }
+        }
+        ?>
+    </ul>
+    </div>
+    <div>
+        <h2>Preview</h2>
+    </div>
+    <div class="col-lg-6" id='media'>
+        <video width="540" height="480" controls>
+            <source src='../../uploads/5_58c26a75c67f4.mp4'></video>
+    </div>
+</div>
 <button onclick="test()" class="btn btn-primary">Update order</button>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
 
 <script>
+    function handleClick(id) {
+        var src = $("#media_" + id).data("url");
+        var type = $("#media_" + id).data("type");
+        if (type == "img") {
+
+//                $("#media").html(<img  width='100' height='100' src="' + src +'">");
+            $("#media").html('<img width="400" height="400" src="' + src +'">')
+
+        }
+        else {
+            $("#media").html('<video width="540" height="480" controls><source src="' + src +'"></video>');
+        }
+
+    }
 
 //    $('.block').sortable({update: sortOtherList});
     $('.block').sortable({});

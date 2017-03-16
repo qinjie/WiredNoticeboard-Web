@@ -13,7 +13,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-<!--    --><?//= $form->field($model, 'duration')->hiddenInput()->label(false) ?>
     <?= $form->field($model, 'duration')->hiddenInput()->label(false) ?>
 
     <?php
