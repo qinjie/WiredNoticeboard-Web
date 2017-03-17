@@ -76,7 +76,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'update' => function ($url, $model) {
                         $url = \yii\helpers\Url::to(['device-media/update', 'id' => $model->id]);
 //                        return Html::a('<span class="fa fa-eye"></span>', $url, ['title' => 'view']);
-                        return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, [
+                        return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
                             'title' => Yii::t('yii', 'Update'),
                             'data-method' => 'post',
                         ]);
