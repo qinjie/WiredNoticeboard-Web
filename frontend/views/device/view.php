@@ -58,7 +58,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => 'mediaFile.name',
                 'label' => "Media file's name"
             ],
+            'mediaFile.extension',
             'iteration',
+            'mediaFile.duration',
             [
                 'class' => 'yii\grid\ActionColumn',
                 'header' => 'Action',
