@@ -62,7 +62,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'class' => 'yii\grid\ActionColumn',
                 'header' => 'Action',
-                'template' => '{delete}',
+                'template' => '{update}  {delete}',
                 'buttons' => [
                     'delete' => function ($url, $model) {
                         $url = \yii\helpers\Url::to(['device-media/delete', 'id' => $model->id]);
@@ -70,6 +70,14 @@ $this->params['breadcrumbs'][] = $this->title;
                         return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
                             'title' => Yii::t('yii', 'Delete'),
                             'data-confirm' => Yii::t('yii', 'Are you sure to delete this item?'),
+                            'data-method' => 'post',
+                        ]);
+                    },
+                    'update' => function ($url, $model) {
+                        $url = \yii\helpers\Url::to(['device-media/update', 'id' => $model->id]);
+//                        return Html::a('<span class="fa fa-eye"></span>', $url, ['title' => 'view']);
+                        return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, [
+                            'title' => Yii::t('yii', 'Update'),
                             'data-method' => 'post',
                         ]);
                     },

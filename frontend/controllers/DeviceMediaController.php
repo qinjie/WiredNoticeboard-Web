@@ -102,7 +102,7 @@ class DeviceMediaController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['/device/view', 'id' => $model->device_id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
