@@ -97,6 +97,10 @@ class MediaFileController extends Controller
 
         if ($model->load(Yii::$app->request->post()) ) {
             $model->file = UploadedFile::getInstance($model, 'file');
+            if(empty($model->file)) {
+                var_dump("haha");
+                return false;
+            }
             $model->user_id = Yii::$app->user->identity->getId();
             $model->extension = $model->file->extension;
             $demo = uniqid($model->user_id . "_");
@@ -137,25 +141,30 @@ class MediaFileController extends Controller
 
         if (Yii::$app->user->id == $model->user_id  || Yii::$app->user->identity->role == User::ROLE_ADMIN){
             if ($model->load(Yii::$app->request->post()) ) {
-                $model->file = UploadedFile::getInstance($model, 'file');
+                $upload_image = UploadedFile::getInstance($model, 'file');
                 $model->user_id = Yii::$app->user->identity->getId();
-                $model->extension = $model->file->extension;
-                $demo = uniqid($model->user_id . "_");
-                if ($model->isVideo())
-                    $model->duration = gmdate("H:i:s", $model->duration);
-                else
-                    $model->duration = gmdate("H:i:s", 1);
-                $model->file_path = 'uploads/'.$demo.'.'.$model->file->extension;
-                $model->file->saveAs($model->file_path);
-                if ($model->isVideo()){
-                    $model->width = 640;
-                    $model->height = 480;
+                if(!empty($upload_image)){
+                    $model->file = $upload_image;
+                    $model->extension = $model->file->extension;
+                    $demo = uniqid($model->user_id . "_");
+                    $model->file_path = 'uploads/'.$demo.'.'.$model->file->extension;
+                    $model->file->saveAs($model->file_path);
+                    if ($model->isVideo())
+                        $model->duration = gmdate("H:i:s", $model->duration);
+                    else
+                        $model->duration = gmdate("H:i:s", 1);
 
+                    if ($model->isVideo()){
+                        $model->width = 640;
+                        $model->height = 480;
+
+                    }
+                    else {
+                        $model->width = getimagesize($model->file_path)[0];
+                        $model->height = getimagesize($model->file_path)[1];
+                    }
                 }
-                else {
-                    $model->width = getimagesize($model->file_path)[0];
-                    $model->height = getimagesize($model->file_path)[1];
-                }
+
                 $model->save();
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {

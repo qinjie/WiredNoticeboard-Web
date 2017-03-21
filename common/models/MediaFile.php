@@ -47,7 +47,8 @@ class MediaFile extends \yii\db\ActiveRecord
             [['name'], 'string', 'max' => 50],
             [['extension'], 'string', 'max' => 10],
             [['file_path'], 'string', 'max' => 100],
-            ['file', 'required'],
+            [['file'], 'required', 'on'=> 'create'],
+//            [['file'], 'file', 'skipOnEmpty' => true],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
@@ -65,7 +66,7 @@ class MediaFile extends \yii\db\ActiveRecord
             'width' => 'Width',
             'height' => 'Height',
             'file_path' => 'File Path',
-            'file' => 'Image',
+            'file' => 'File',
             'user_id' => 'User ID',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',

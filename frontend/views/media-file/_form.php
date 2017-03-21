@@ -17,7 +17,7 @@ use yii\widgets\ActiveForm;
 
     <?php
         if ($model->isNewRecord) {
-            echo $form->field($model, 'file', ['inputOptions' => ['id' => 'first_name']])->widget(\kartik\file\FileInput::className(),
+            echo $form->field($model, 'file')->widget(\kartik\file\FileInput::className(),
                 [
 
                     'options' => [
@@ -25,7 +25,8 @@ use yii\widgets\ActiveForm;
                         'accept' => 'image/*,video/mp4'
                     ],
                     'pluginOptions' => [
-                        'uploadUrl' => Url::to(['/site/create']),
+//                        'uploadUrl' => Url::to(['/media-file/create']),
+                        'uploadAsync' => false,
                         'showUpload' => false,
                     ]
                 ]);
@@ -39,11 +40,12 @@ use yii\widgets\ActiveForm;
                         'accept' => 'image/*,video/mp4'
                     ],
                     'pluginOptions' => [
-                        'uploadUrl' => Url::to(['/site/create']),
+//                        'uploadUrl' => Url::to(['/media-file/create']),
+                        'uploadAsync' => false,
                         'showUpload' => false,
                         'initialPreview'=> "../" . $model->file_path,
                         'initialPreviewAsData'=>true,
-                        'initialPreviewFileType' => 'video',
+                        'initialPreviewFileType' => 'image',
 
                     ]
                 ]);

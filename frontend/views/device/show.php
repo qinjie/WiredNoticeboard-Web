@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php
         foreach ($device as $key => $value){
             if ($value->mediaFile->isVideo()) {
-                $src ='http://www.free-icons-download.net/images/mp4-file-icon-44048.png';
+                $src ='../../file_video.png';
                 echo '<li class="slide slide1"  id= "'. $value->id .'">';
                 echo "<div class='show row'>
                         <div class='col-md-5'>
