@@ -55,8 +55,11 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'media_file_id',
-                'value' => 'mediaFile.name',
-                'label' => "Media file's name"
+                'format' => 'raw',
+                'value' => function($model){
+                    return Html::a($model->mediaFile->name, ['/media-file/view', 'id' => $model->media_file_id]);
+                },
+                'label' => "Media-file name"
             ],
             'mediaFile.extension',
             'iteration',

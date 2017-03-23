@@ -14,7 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <p>Please drag to change your sequence.</p>
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-5">
     <ul class="block">
         <?php
         foreach ($device as $key => $value){
@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             </a>
                         </div>
                         <div class='col-md-7'>
-                            <a href='../../media-file/view?id=".$value->id."'>"
+                            <a href='../../media-file/view?id=".$value->mediaFile->id."'>"
                     .$value->sequence.  ". ". $value->mediaFile->name
                     ."</a>
                              <div>Created at: " .$value->mediaFile->created_at
@@ -53,7 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             </a>
                         </div>
                         <div class='col-md-7'>
-                            <a href='../../media-file/view?id=".$value->id."'>"
+                            <a href='../../media-file/view?id=".$value->mediaFile->id."'>"
                     .$value->sequence.  ". ". $value->mediaFile->name
                     ."</a>
                              <div>Created at: " .$value->mediaFile->created_at
@@ -75,7 +75,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div>
         <h2>Preview</h2>
     </div>
-    <div class="col-lg-6" id='media'>
+    <div class="col-lg-7" id='media'>
         <video width="540" height="480" controls>
             <source src='../../uploads/5_58c26a75c67f4.mp4'></video>
     </div>
@@ -91,7 +91,7 @@ $this->params['breadcrumbs'][] = $this->title;
         if (type == "img") {
 
 //                $("#media").html(<img  width='100' height='100' src="' + src +'">");
-            $("#media").html('<img width="400" height="400" src="' + src +'">')
+            $("#media").html('<img max-width="700" max-height="700" src="' + src +'">')
 
         }
         else {
