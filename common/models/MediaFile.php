@@ -108,4 +108,9 @@ class MediaFile extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
+
+    public function getUnique(){
+        return substr($this->file_path, 8);
+    }
+
 }
