@@ -29,6 +29,7 @@ class MediaFile extends \yii\db\ActiveRecord
 
     public $file;
     public $iteration;
+    public $unique;
 
     public static function tableName()
     {
@@ -79,6 +80,9 @@ class MediaFile extends \yii\db\ActiveRecord
             'link' => function ($model) {
                 return "http://128.199.93.67/WiredNoticeboard-Web/frontend/web/" . $model->file_path;
             },
+            'unique' => function($model){
+                return substr($this->file_path, 8);
+            }
         ];
         $fields = array_merge(parent::fields(), $new);
         return $fields;
@@ -107,10 +111,6 @@ class MediaFile extends \yii\db\ActiveRecord
     public function getUser()
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
-    }
-
-    public function getUnique(){
-        return substr($this->file_path, 8);
     }
 
 }
