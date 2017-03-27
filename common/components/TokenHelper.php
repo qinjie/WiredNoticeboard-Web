@@ -2,9 +2,11 @@
 
 namespace common\components;
 
+use common\models\DeviceToken;
 use common\models\UserToken;
 use Yii;
 use yii\base\ErrorException;
+use yii\base\Exception;
 
 /**
  * Created by PhpStorm.
@@ -34,6 +36,26 @@ class TokenHelper
         $model->expire = date('Y-m-d H:i:s', time() + $interval);
         $model->label = is_null($label) ? self::TOKEN_LABEL_ACCESS : $label;
         $model->mac_address = \Yii::$app->getRequest()->getUserIP();
+//        UserToken::model()->deleteAllByAttributes(array("userId" => $model->userId, "label" => $model->label, "ipAddress" => $model->ipAddress));
+        if ($model->save())
+            return $model;
+        else
+            return null;
+
+    }
+
+    public static function createDeviceToken($deviceId, $label = null)
+    {
+        /*@var Token $model */
+        $model = new DeviceToken();
+        $model->device_id = $deviceId;
+        $model->token = self::generateToken();
+//        $params = Yii::$app()->getParams();
+//        $interval = $params['restful_token_expired_seconds'];
+        $interval = 30 * 24 * 60 * 60;
+        $model->expire = date('Y-m-d H:i:s', time() + $interval);
+        $model->label = is_null($label) ? self::TOKEN_LABEL_ACCESS : $label;
+        $model->mac_address = \Yii::$app->getRequest()->getUserIP();
         //UserToken::model()->deleteAllByAttributes(array("userId" => $model->userId, "label" => $model->label, "ipAddress" => $model->ipAddress));
         if ($model->save())
             return $model;
@@ -54,8 +76,9 @@ class TokenHelper
         if ($token == null || strlen($token) == 0) {
             return self::TOKEN_MISSING;
         }
-
+        $record = self::deleteCachedToken($token);
         $record = self::lookupCachedToken($token);
+
         if ($record == null) {
             // lookup auth token in database
             $params = array('token' => $token);
@@ -65,9 +88,11 @@ class TokenHelper
                 $params['ipAddress'] = $ipAddress;
 
             $record = UserToken::findOne($params);
+            if ($record == null) $record = DeviceToken::findOne(['token' => $token]);
         }
 
         // if no such token found
+//        throw new Exception($record->device_id);
         if ($record == null) {
             return self::TOKEN_INVALID;
         }
@@ -77,12 +102,13 @@ class TokenHelper
         if ($checkExpire && $expire < $current) {
             self::deleteCachedToken($token);
             UserToken::model()->deleteByPk($record->id);
+            DeviceToken::model()->deleteByPk($record->id);
             return self::TOKEN_EXPIRED;
         }
 
         self::updateExpire($record);
         self::cacheToken($token, $record);
-
+        if (empty($record->user_id)) return $record->device_id;
         return $record->user_id;
     }
 

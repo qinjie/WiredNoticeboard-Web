@@ -13,6 +13,7 @@ use api\components\CustomActiveController;
 use common\components\AccessRule;
 use common\components\TokenHelper;
 use common\models\Device;
+use common\models\DeviceToken;
 use common\models\UserToken;
 use yii\filters\AccessControl;
 use yii\filters\auth\HttpBearerAuth;
@@ -70,8 +71,9 @@ class DeviceController extends CustomActiveController
             return -1;
         }
 //        $device = Device::findOne($model->device_id);
-        UserToken::deleteAll(['user_id' => $model->user_id]);
-        $token = TokenHelper::createUserToken($model->user_id);
+        DeviceToken::deleteAll(['device_id' => $model->id]);
+//        $token = TokenHelper::createUserToken($model->user_id);
+        $token = TokenHelper::createDeviceToken($model->id);
         return [
             'user_id' => $model->user_id,
             'device_id' => $model->id,
