@@ -22,7 +22,7 @@ use yii\widgets\ActiveForm;
 
                     'options' => [
                         'multiple' => false,
-                        'accept' => 'image/*,video/mp4'
+                        'accept' => 'image/*,video/mp4,application/pdf'
                     ],
                     'pluginOptions' => [
 //                        'uploadUrl' => Url::to(['/media-file/create']),
@@ -37,7 +37,7 @@ use yii\widgets\ActiveForm;
 
                     'options' => [
                         'multiple' => false,
-                        'accept' => 'image/*,video/mp4'
+                        'accept' => 'image/*,video/mp4,application/pdf'
                     ],
                     'pluginOptions' => [
 //                        'uploadUrl' => Url::to(['/media-file/create']),
