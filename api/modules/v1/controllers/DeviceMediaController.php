@@ -12,6 +12,7 @@ namespace api\modules\v1\controllers;
 use api\common\models\DeviceMedia;
 use api\components\CustomActiveController;
 use common\components\AccessRule;
+use common\models\DeviceToken;
 use yii\filters\AccessControl;
 use yii\filters\auth\HttpBearerAuth;
 use yii\filters\VerbFilter;
@@ -65,6 +66,22 @@ class DeviceMediaController extends CustomActiveController
         $bodyParams = $request->bodyParams;
         $device_id = $bodyParams['device_id'];
         $listMedia = DeviceMedia::find()->where(['device_id' => $device_id])->orderBy('sequence')->all();
+        $list = [];
+        foreach ($listMedia as $value){
+            $list [] = $value->mediaFile;
+        }
+//        return $list;
+        return $listMedia;
+    }
+
+    public function actionListMedia(){
+        $headers = \Yii::$app->request->headers;
+        $token = $headers->get('Authorization');
+        $token = substr($token, 7);
+        $device = DeviceToken::find()->where(['token' => $token])->one();
+        if (empty($device)) throw new UnauthorizedHttpException('Your request was made with invalid credentials.');
+//        return $device->device_id;
+        $listMedia = DeviceMedia::find()->where(['device_id' => $device->device_id])->orderBy('sequence')->all();
         $list = [];
         foreach ($listMedia as $value){
             $list [] = $value->mediaFile;

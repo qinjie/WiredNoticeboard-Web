@@ -65,8 +65,8 @@ class DeviceController extends CustomActiveController
     public function actionGetDevice(){
         $request = \Yii::$app->request;
         $bodyParams = $request->bodyParams;
-        $token = $bodyParams['token'];
-        $model = Device::findOne(['token' => $token]);
+        $token = $bodyParams['mac'];
+        $model = Device::findOne(['mac' => $token]);
         if (!$model){
             return -1;
         }

@@ -34,7 +34,7 @@ class Device extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'user_id'], 'required'],
+            [['name', 'user_id', 'mac'], 'required'],
             [['user_id'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
             [['token'], 'safe'],
@@ -53,6 +53,7 @@ class Device extends \yii\db\ActiveRecord
             'id' => 'ID',
             'name' => 'Name',
             'remark' => 'Remark',
+            'mac' => 'Serial Number',
             'user_id' => 'User ID',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',

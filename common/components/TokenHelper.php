@@ -2,6 +2,7 @@
 
 namespace common\components;
 
+use common\models\Device;
 use common\models\DeviceToken;
 use common\models\UserToken;
 use Yii;
@@ -92,10 +93,10 @@ class TokenHelper
         }
 
         // if no such token found
-//        throw new Exception($record->device_id);
         if ($record == null) {
             return self::TOKEN_INVALID;
         }
+//        throw new Exception($record->device_id);
         // if need to check whether token has expired.
         $current = time();
         $expire = strtotime($record->expire);
@@ -108,7 +109,14 @@ class TokenHelper
 
         self::updateExpire($record);
         self::cacheToken($token, $record);
-        if (empty($record->user_id)) return $record->device_id;
+
+        if (empty($record->user_id)) {
+            $device = Device::findOne($record->device_id);
+            return $device->user_id;
+//            throw new Exception($record->device_id);
+//            return $record->device_id;
+        }
+
         return $record->user_id;
     }
 
