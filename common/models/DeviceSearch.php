@@ -19,7 +19,7 @@ class DeviceSearch extends Device
     {
         return [
             [['id', 'user_id'], 'integer'],
-            [['name', 'remark', 'created_at', 'updated_at', 'token'], 'safe'],
+            [['name', 'remark', 'created_at', 'updated_at', 'mac'], 'safe'],
         ];
     }
 
@@ -63,7 +63,7 @@ class DeviceSearch extends Device
             'user_id' => $this->user_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'token'=> $this->token,
+            'mac'=> $this->mac,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
@@ -95,7 +95,7 @@ class DeviceSearch extends Device
             'user_id' => $user_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'token'=> $this->token,
+            'mac'=> $this->mac,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])

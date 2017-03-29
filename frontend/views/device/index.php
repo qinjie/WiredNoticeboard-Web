@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'Username',
                 'value' => 'user.username',
             ],
-            'token',
+            'mac',
             'created_at',
             // 'updated_at',
 
