@@ -97,6 +97,11 @@ class MediaFile extends \yii\db\ActiveRecord
 
     }
 
+    public function isPdf(){
+        if ($this->extension == 'pdf') return true;
+        return false;
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */

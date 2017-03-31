@@ -20,64 +20,54 @@ $this->params['breadcrumbs'][] = $this->title;
         foreach ($device as $key => $value){
             if ($value->mediaFile->isVideo()) {
                 $src ='../../file_video.png';
-                echo '<li class="slide slide1"  id= "'. $value->id .'">';
-                echo "<div class='show row'>
-                        <div class='col-md-5'>
-                            <a id ='media_".$value->id."' onclick='handleClick(".$value->id.")' data-type='video' data-url='"."../../".$value->mediaFile->file_path. "'>
-                                <img  width='100' height='100' src=".$src.">
-                            </a>
-                        </div>
-                        <div class='col-md-7'>
-                            <a href='../../media-file/view?id=".$value->mediaFile->id."'>"
-                    .$value->sequence.  ". ". $value->mediaFile->name
-                    ."</a>
-                             <div>Created at: " .$value->mediaFile->created_at
-                    ."</div>
-                            <div>Iteration: "
-                    . $value->iteration
-                    ."</div>
-                            <div>Showing time: "
-                    . $value->mediaFile->duration
-                    .'</div>
-                        </div>
-                    </div>
-                </li>';
+                $type = 'video';
+                $url = $value->mediaFile->file_path;
             }
             else {
-                $src = Html::encode("../../".$value->mediaFile->file_path);
-                echo '<li class="slide slide1"  id= "'. $value->id .'">';
-                echo "<div class='show row'>
+                if ($value->mediaFile->isPdf()) {
+                    $url = Html::encode("../../".$value->mediaFile->file_path);
+                    $src ='../../pdf.png';
+                    $type = 'pdf';
+                }
+                else {
+                    $src = Html::encode("../../".$value->mediaFile->file_path);
+                    $type = "img";
+                    $url = $src;
+                }
+            }
+            echo '<li class="slide slide1"  id= "'. $value->id .'">';
+            echo "<div class='show row'>
                         <div class='col-md-5'>
-                            <a id ='media_".$value->id."' onclick='handleClick(".$value->id.")' data-type='img' data-url='".$src. "'>
+                            <a id ='media_".$value->id."' onclick='handleClick(".$value->id.")' data-type='".$type ."' data-url='".$url. "'>
                                 <img  width='100' height='100' src=".$src.">
                             </a>
                         </div>
                         <div class='col-md-7'>
                             <a href='../../media-file/view?id=".$value->mediaFile->id."'>"
-                    .$value->sequence.  ". ". $value->mediaFile->name
-                    ."</a>
-                             <div>Created at: " .$value->mediaFile->created_at
-                    ."</div>
+                .$value->sequence.  ". ". $value->mediaFile->name
+                ."</a>
+                            <div>Created at: " .$value->mediaFile->created_at
+                ."</div>
                             <div>Iteration: "
-                    . $value->iteration
-                    ."</div>
+                . $value->iteration
+                ."</div>
                             <div>Showing time: "
-                    . $value->mediaFile->duration
-                    .'</div>
+                . $value->mediaFile->duration
+                .'</div>
                         </div>
                     </div>
                 </li>';
-            }
         }
         ?>
     </ul>
     </div>
-    <div>
-        <h2>Preview</h2>
-    </div>
-    <div class="col-lg-7" id='media'>
-        <video width="540" height="480" controls>
-            <source src='../../uploads/5_58c26a75c67f4.mp4'></video>
+    <div class="col-lg-7">
+        <div>
+            <h2>Preview</h2>
+        </div>
+        <div  id='media'>
+            <img width="500" height="480" src='../../Preview.png'>
+        </div>
     </div>
 </div>
 <button onclick="test()" class="btn btn-primary">Update order</button>
@@ -95,7 +85,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
         }
         else {
-            $("#media").html('<video width="540" height="480" controls><source src="' + src +'"></video>');
+            if (type == "pdf") {
+                $("#media").html('<embed src=' + src + ' width="500" height="375" type="application/pdf">');
+            }
+            else
+                $("#media").html('<video width="540" height="480" controls><source src="' + src +'"></video>');
         }
 
     }

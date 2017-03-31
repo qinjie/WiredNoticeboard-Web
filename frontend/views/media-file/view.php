@@ -54,7 +54,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     <source src='. $src . '></video>';
             }
             else {
-                echo '<img src='.$src .'>';
+                if ($model->isPdf()){
+                    echo '<embed src='.$src.' width="500" height="375" type="application/pdf">';
+
+                }
+                else
+                    echo '<img src='.$src .'>';
             }
         ?>
 
