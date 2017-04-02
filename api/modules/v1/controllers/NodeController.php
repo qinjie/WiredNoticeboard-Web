@@ -63,9 +63,10 @@ class NodeController extends CustomActiveController
 
     public function actionEnroll()
     {
-        $request = \Yii::$app->request;
-        $bodyParams = $request->bodyParams;
-        $token = $bodyParams['mac'];
+        $headers = Yii::$app->request->headers;
+        if(!isset($headers['Mac']))
+            throw new HttpException(400, 'Missing <Mac> attribute in header.');
+        $token = $headers['Mac'];
         $model = Device::findOne(['mac' => $token]);
         if (!$model) {
             throw new UnauthorizedHttpException('You are not authorized');
@@ -81,9 +82,10 @@ class NodeController extends CustomActiveController
 
     public function actionPlaylist()
     {
-        $request = \Yii::$app->request;
-        $bodyParams = $request->bodyParams;
-        $token = $bodyParams['token'];
+        $headers = Yii::$app->request->headers;
+        if(!isset($headers['Token']))
+            throw new HttpException(400, 'Missing <Token> attribute in header.');
+        $token = $headers['Token'];
         $model = DeviceToken::findOne(['token' => $token]);
         if (!$model) {
             throw new UnauthorizedHttpException('You are not authorized');
@@ -93,9 +95,10 @@ class NodeController extends CustomActiveController
 
     public function actionDownloadFile($filename)
     {
-        $request = \Yii::$app->request;
-        $bodyParams = $request->bodyParams;
-        $token = $bodyParams['token'];
+        $headers = Yii::$app->request->headers;
+        if(!isset($headers['Token']))
+            throw new HttpException(400, 'Missing <Token> attribute in header.');
+        $token = $headers['Token'];
         $model = DeviceToken::findOne(['token' => $token]);
         if (!$model) {
             throw new UnauthorizedHttpException('You are not authorized');

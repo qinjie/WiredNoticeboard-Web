@@ -80,8 +80,8 @@ return [
                     'controller' => 'v1/node',
                     'extraPatterns' => [
                         'POST enroll' => 'enroll',
-                        'POST playlist' => 'playlist',
-                        'POST download-file/{filename}' => 'download-file',
+                        'GET playlist' => 'playlist',
+                        'GET download-file/{filename}' => 'download-file',
                     ],
                     'tokens' => [
                         '{id}' => '<id:\\w+>',
