@@ -10,7 +10,7 @@ namespace api\modules\v1\controllers;
 
 
 use api\common\models\DeviceMedia;
-use api\components\CustomActiveController;
+use api\common\controllers\CustomActiveController;
 use common\components\AccessRule;
 use common\models\DeviceToken;
 use yii\filters\AccessControl;

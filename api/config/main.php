@@ -8,6 +8,8 @@ $params = array_merge(
 
 return [
     'id' => 'app-api',
+    'name' => 'Wired Noticeboard',
+    'timeZone' => 'Asia/Singapore',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'modules' => [
@@ -17,20 +19,17 @@ return [
         ],
     ],
     'components' => [
-//        'authManager' => [
-//            'class' => 'common\components\PhpManager',
-//            'defaultRoles' => ['user', 'manager', 'admin'],
-//            # if need to configure following files outside default folder (rbac)
-////            'itemFile' => 'app\api\data\items.php', //Default path to items.php
-////            'assignmentFile' => 'app\api\data\assignments.php', //Default path to assignments.php
-////            'ruleFile' => 'app\api\data\rules.php', //Default path to rules.php
-//        ],
+        'authManager' => [
+            'class' => 'common\components\PhpManager',
+            'defaultRoles' => ['user', 'admin'],
+        ],
         'request' => [
             // Enable JSON Input
             'enableCookieValidation' => false,
             'parsers' => [
                 'application/json' => 'yii\web\JsonParser',
             ],
+            'cookieValidationKey' => 'MXtBcX_ZOCJVA4g9MOz6JoHtUvNFgkv8',
         ],
         'response' => [
             'format' => 'json',
@@ -59,20 +58,41 @@ return [
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,
-//            'enableStrictParsing' => true,
+            'enableStrictParsing' => true,
             'showScriptName' => false,
             // Add URL Rules for API
             'rules' => [
                 # API for ActiveRecords
                 ['class' => 'yii\rest\UrlRule', 'pluralize' => false,
-                    'controller' => ['v1/device'],
+                    'controller' => 'v1/device',
                     'tokens' => [
                         # Keep 'id' for default CRUD action
                         '{id}' => '<id:\\w+>',
                     ],
                 ],
+                ['class' => 'yii\rest\UrlRule', 'pluralize' => false,
+                    'controller' => 'v1/device-media',
+                ],
+                ['class' => 'yii\rest\UrlRule', 'pluralize' => false,
+                    'controller' => 'v1/media-file',
+                ],
+                ['class' => 'yii\rest\UrlRule', 'pluralize' => false,
+                    'controller' => 'v1/node',
+                    'extraPatterns' => [
+                        'POST enroll' => 'enroll',
+                        'POST playlist' => 'playlist',
+                    ],
+                ],
             ],
-        ]
+        ],
+        'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+            // send all mails to a file by default. You have to set
+            // 'useFileTransport' to false and configure a transport
+            // for the mailer to send real emails.
+            'useFileTransport' => true,
+        ],
+
     ],
     'params' => $params,
 ];

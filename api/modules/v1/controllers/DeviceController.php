@@ -9,12 +9,14 @@
 namespace api\modules\v1\controllers;
 
 
-use api\components\CustomActiveController;
+use api\common\controllers\CustomActiveController;
 use common\components\AccessRule;
 use common\components\TokenHelper;
 use common\models\Device;
 use common\models\DeviceToken;
+use common\models\User;
 use common\models\UserToken;
+use Yii;
 use yii\filters\AccessControl;
 use yii\filters\auth\HttpBearerAuth;
 use yii\filters\VerbFilter;
@@ -24,12 +26,12 @@ class DeviceController extends CustomActiveController
 {
     public $modelClass = 'api\common\models\Device';
 
-    public function behaviors() {
+    public function behaviors()
+    {
         $behaviors = parent::behaviors();
 
-        $behaviors['authenticator'] = [
-            'class' => HttpBearerAuth::className(),
-            'except' => ['get-device'],
+        $behaviors['authenticator']['except'] = [
+//            'index', 'view', 'update', 'create', 'delete'
         ];
 
         $behaviors['access'] = [
@@ -39,14 +41,21 @@ class DeviceController extends CustomActiveController
             ],
             'rules' => [
                 [
-                    'actions' => [],
-                    'allow' => true,
-                    'roles' => ['?'],
-                ],
-                [
-                    'actions' => [],
+                    'actions' => ['index', 'search', 'create'],
                     'allow' => true,
                     'roles' => ['@'],
+                ],
+                [
+                    // Can only view and update
+                    'actions' => ['view', 'update', 'delete'],
+                    'allow' => true,
+                    'roles' => ['@'],
+                    'matchCallback' => function ($rule, $action) {
+                        if ($this->isUserOwnerOrAdmin()) {
+                            return true;
+                        }
+                        return false;
+                    }
                 ],
             ],
             'denyCallback' => function ($rule, $action) {
@@ -62,24 +71,18 @@ class DeviceController extends CustomActiveController
 
         return $behaviors;
     }
-    public function actionGetDevice(){
-        $request = \Yii::$app->request;
-        $bodyParams = $request->bodyParams;
-        $token = $bodyParams['mac'];
-        $model = Device::findOne(['mac' => $token]);
-        if (!$model){
-            return -1;
-        }
-//        $device = Device::findOne($model->device_id);
-        DeviceToken::deleteAll(['device_id' => $model->id]);
-//        $token = TokenHelper::createUserToken($model->user_id);
-        $token = TokenHelper::createDeviceToken($model->id);
-        return [
-            'user_id' => $model->user_id,
-            'device_id' => $model->id,
-            'token' => $token->token,
-        ];
-//        return $model->device_id;
+
+    protected function isUserOwnerOrAdmin()
+    {
+        if ((Yii::$app->user->identity->role == User::ROLE_ADMIN))
+            return true;
+
+        $id = Yii::$app->request->get('id');
+        $model = $this->findModel($id);
+        if (!isset($model->user))
+            return false;
+
+        return $model->user->id == Yii::$app->user->id;
     }
 
 }

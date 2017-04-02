@@ -9,7 +9,7 @@
 namespace api\modules\v1\controllers;
 
 
-use api\components\CustomActiveController;
+use api\common\controllers\CustomActiveController;
 use common\components\AccessRule;
 use yii\filters\AccessControl;
 use yii\filters\auth\HttpBearerAuth;
@@ -58,5 +58,4 @@ class MediaFileController extends CustomActiveController
 
         return $behaviors;
     }
-
 }

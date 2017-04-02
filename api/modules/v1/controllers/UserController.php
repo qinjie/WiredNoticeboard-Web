@@ -51,7 +51,7 @@ class UserController extends CustomActiveController
                     'actions' => ['logout'],
                     'allow' => true,
                     'roles' => ['@'],
-                ]
+                ],
             ],
             'denyCallback' => function ($rule, $action) {
                 throw new UnauthorizedHttpException('You are not authorized');
