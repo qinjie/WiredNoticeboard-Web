@@ -15,9 +15,11 @@ use common\components\TokenHelper;
 use common\models\Device;
 use common\models\DeviceToken;
 use common\models\UserToken;
+use Yii;
 use yii\filters\AccessControl;
 use yii\filters\auth\HttpBearerAuth;
 use yii\filters\VerbFilter;
+use yii\web\HttpException;
 use yii\web\UnauthorizedHttpException;
 
 class NodeController extends CustomActiveController
@@ -34,8 +36,9 @@ class NodeController extends CustomActiveController
     {
         $behaviors = parent::behaviors();
 
+        # Use custom authentication through device-token
         $behaviors['authenticator']['except'] = [
-            'enroll', 'playlist',
+            'enroll', 'playlist', 'download-file'
         ];
 
         $behaviors['access'] = [
@@ -45,7 +48,7 @@ class NodeController extends CustomActiveController
             ],
             'rules' => [
                 [
-                    'actions' => ['enroll', 'playlist'],
+                    'actions' => ['enroll', 'playlist', 'download-file'],
                     'allow' => true,
                     'roles' => ['?'],
                 ],
@@ -65,7 +68,7 @@ class NodeController extends CustomActiveController
         $token = $bodyParams['mac'];
         $model = Device::findOne(['mac' => $token]);
         if (!$model) {
-            return -1;
+            throw new UnauthorizedHttpException('You are not authorized');
         }
         DeviceToken::deleteAll(['device_id' => $model->id]);
         $token = TokenHelper::createDeviceToken($model->id);
@@ -83,9 +86,27 @@ class NodeController extends CustomActiveController
         $token = $bodyParams['token'];
         $model = DeviceToken::findOne(['token' => $token]);
         if (!$model) {
-            return -1;
+            throw new UnauthorizedHttpException('You are not authorized');
         }
         return $model->device->playlist;
     }
 
+    public function actionDownloadFile($filename)
+    {
+        $request = \Yii::$app->request;
+        $bodyParams = $request->bodyParams;
+        $token = $bodyParams['token'];
+        $model = DeviceToken::findOne(['token' => $token]);
+        if (!$model) {
+            throw new UnauthorizedHttpException('You are not authorized');
+        }
+
+        $folder = Yii::getAlias('@uploads');
+        $path = $folder . '/' . $filename;
+        if (file_exists($path)) {
+            Yii::$app->response->SendFile($path, $filename);
+        } else {
+            throw new HttpException(404, 'The requested item could not be found.');
+        }
+    }
 }

@@ -81,6 +81,11 @@ return [
                     'extraPatterns' => [
                         'POST enroll' => 'enroll',
                         'POST playlist' => 'playlist',
+                        'POST download-file/{filename}' => 'download-file',
+                    ],
+                    'tokens' => [
+                        '{id}' => '<id:\\w+>',
+                        '{filename}' => '<filename:[\\w\\s]+[\\w\\s\\.]+>',
                     ],
                 ],
             ],

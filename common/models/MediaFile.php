@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "media_file".
@@ -29,7 +30,6 @@ class MediaFile extends \yii\db\ActiveRecord
 
     public $file;
     public $iteration;
-    public $unique;
 
     public static function tableName()
     {
@@ -77,12 +77,9 @@ class MediaFile extends \yii\db\ActiveRecord
     public function fields()
     {
         $new = [
-            'link' => function ($model) {
-                return "http://128.199.93.67/WiredNoticeboard-Web/frontend/web/" . $model->file_path;
-            },
-            'unique' => function($model){
-                return substr($this->file_path, 8);
-            }
+//            'link' => function ($model) {
+//                return str_replace("api/web","uploads/", Url::base(true)). $model->file_path;
+//            },
         ];
         $fields = array_merge(parent::fields(), $new);
         return $fields;
