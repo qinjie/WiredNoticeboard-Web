@@ -13,7 +13,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'duration')->hiddenInput()->label(false) ?>
+<!--    --><?//= $form->field($model, 'duration', ['options' => ['name' => 'f_du']]) ?>
 
     <?php
         if ($model->isNewRecord) {
@@ -55,7 +55,7 @@ use yii\widgets\ActiveForm;
 
 <!--    <button onclick="myFunction()">Get duration</button>-->
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'id' => 'btn-create', 'onclick' => 'myFunction()']) ?>
+        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'id' => 'btn-create']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
@@ -73,7 +73,7 @@ use yii\widgets\ActiveForm;
 //        var d = ('.mediafile-duration');
 
         function myFunction() {
-//            alert((x[0].duration));
+            alert((x[0].duration));
             d.val(x[0].duration);
 //            duration.val = x[0].duration;
 
@@ -84,3 +84,34 @@ use yii\widgets\ActiveForm;
     </script>
 
 </div>
+<!--<form action="#" method="post" enctype="multipart/form-data">-->
+<!--    File: <input type="file" name="fup" id="fup" /><br>-->
+<!--    Duration: <input type="text" name="f_du" id="f_du" size="5" /> seconds<br>-->
+<!--    <input type="submit" value="Upload" />-->
+<!--</form>-->
+<!--<audio id="audio"></audio>-->
+<!---->
+<!--<script>-->
+<!--    // Code to get duration of audio /video file before upload - from: http://coursesweb.net/-->
+<!---->
+<!--    //register canplaythrough event to #audio element to can get duration-->
+<!--    var f_duration =0;  //store duration-->
+<!--    document.getElementById('audio').addEventListener('canplaythrough', function(e){-->
+<!--        //add duration in the input field #f_du-->
+<!--        f_duration = Math.round(e.currentTarget.duration);-->
+<!--        document.getElementById('f_du').value = f_duration;-->
+<!--        $('#mediafile-duration').val(f_duration);-->
+<!--        URL.revokeObjectURL(obUrl);-->
+<!--    });-->
+<!---->
+<!--    //when select a file, create an ObjectURL with the file and add it in the #audio element-->
+<!--    var obUrl;-->
+<!--    document.getElementById('fup').addEventListener('change', function(e){-->
+<!--        var file = e.currentTarget.files[0];-->
+<!--        //check file extension for audio/video type-->
+<!--        if(file.name.match(/\.(avi|mp3|mp4|mpeg|ogg)$/i)){-->
+<!--            obUrl = URL.createObjectURL(file);-->
+<!--            document.getElementById('audio').setAttribute('src', obUrl);-->
+<!--        }-->
+<!--    });-->
+<!--</script>-->

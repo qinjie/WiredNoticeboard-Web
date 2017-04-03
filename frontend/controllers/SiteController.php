@@ -2,6 +2,7 @@
 namespace frontend\controllers;
 
 use common\components\AccessRule;
+use common\models\form\ChangePasswordForm;
 use common\models\User;
 use Yii;
 use yii\base\Exception;
@@ -233,5 +234,21 @@ class SiteController extends Controller
         return $this->render('resetPassword', [
             'model' => $model,
         ]);
+    }
+
+    public function actionChangePassword()
+    {
+        /*@var $user \common\models\User */
+        $user = User::findOne(Yii::$app->user->identity->getId());
+        $model = new ChangePasswordForm($user);
+
+        if ($model->load(Yii::$app->request->post()) && $model->changePassword()) {
+            Yii::$app->getSession()->setFlash('success', 'You have changed your password.');
+            return $this->goHome();
+        } else {
+            return $this->render('changePassword', [
+                'model' => $model,
+            ]);
+        }
     }
 }

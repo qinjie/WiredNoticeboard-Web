@@ -102,8 +102,12 @@ class MediaFileController extends Controller
             $model->user_id = Yii::$app->user->identity->getId();
             $model->extension = $model->file->extension;
             $demo = uniqid($model->user_id . "_");
-            if ($model->isVideo())
-                $model->duration = gmdate("H:i:s", $model->duration);
+            if ($model->isVideo()){
+//                var_dump($model->duration);
+//                $model->duration = gmdate("H:i:s", $model->duration);
+
+            }
+
             else
                 $model->duration = gmdate("H:i:s", 1);
             $model->file_path = $demo . '.' . $model->file->extension;

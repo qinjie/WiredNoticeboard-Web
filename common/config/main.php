@@ -9,7 +9,7 @@ return [
         ],
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=127.0.0.1;dbname=wired_noticeboard',
+            'dsn' => 'mysql:host=localhost;dbname=wired_noticeboard',
             'username' => 'root',
             'password' => 'abcd1234',
             'charset' => 'utf8',
