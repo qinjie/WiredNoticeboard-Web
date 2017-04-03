@@ -107,15 +107,15 @@ class MediaFileController extends Controller
             else
                 $model->duration = gmdate("H:i:s", 1);
             $model->file_path = $demo . '.' . $model->file->extension;
-            $model->file->saveAs($model->file_path);
+            $model->file->saveAs(Yii::getAlias('@uploads') . '/' . $model->file_path);
 //            var_dump($this->getDuration($model->file_path));
 //            return;
             if ($model->isVideo()) {
                 $model->width = 640;
                 $model->height = 480;
             } else {
-                $model->width = getimagesize($model->file_path)[0];
-                $model->height = getimagesize($model->file_path)[1];
+                $model->width = getimagesize(Yii::getAlias('@uploads') . '/' .$model->file_path)[0];
+                $model->height = getimagesize(Yii::getAlias('@uploads') . '/' .$model->file_path)[1];
             }
             $model->save();
             return $this->redirect(['view', 'id' => $model->id]);
@@ -145,7 +145,7 @@ class MediaFileController extends Controller
                     $model->extension = $model->file->extension;
                     $demo = uniqid($model->user_id . "_");
                     $model->file_path = $demo . '.' . $model->file->extension;
-                    $model->file->saveAs($model->file_path);
+                    $model->file->saveAs(Yii::getAlias('@uploads') . '/' . $model->file_path);
                     if ($model->isVideo())
                         $model->duration = gmdate("H:i:s", $model->duration);
                     else
@@ -156,8 +156,8 @@ class MediaFileController extends Controller
                         $model->height = 480;
 
                     } else {
-                        $model->width = getimagesize($model->file_path)[0];
-                        $model->height = getimagesize($model->file_path)[1];
+                        $model->width = getimagesize(Yii::getAlias('@uploads') . '/' .$model->file_path)[0];
+                        $model->height = getimagesize(Yii::getAlias('@uploads') . '/' .$model->file_path)[1];
                     }
                 }
 

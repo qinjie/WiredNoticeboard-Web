@@ -18,21 +18,22 @@ $this->params['breadcrumbs'][] = $this->title;
     <ul class="block">
         <?php
         foreach ($device as $key => $value){
+            $filename = $value->mediaFile->file_path;
+            $folder = Yii::getAlias('@uploads');
+            $path = $folder . '/' . $filename;
+            $url = Html::encode("../../../../uploads/".$value->mediaFile->file_path);
             if ($value->mediaFile->isVideo()) {
-                $src ='../file_video.png';
+                $src ='../../file_video.png';
                 $type = 'video';
-                $url = $value->mediaFile->file_path;
             }
             else {
                 if ($value->mediaFile->isPdf()) {
-                    $url = Html::encode("../uploads/".$value->mediaFile->file_path);
                     $src ='../../pdf.png';
                     $type = 'pdf';
                 }
                 else {
-                    $src = Html::encode("../uploads/".$value->mediaFile->file_path);
                     $type = "img";
-                    $url = $src;
+                    $src = $url;
                 }
             }
             echo '<li class="slide slide1"  id= "'. $value->id .'">';
