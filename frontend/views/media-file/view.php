@@ -48,7 +48,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h3>Preview</h3>
     <div align="center">
         <?php
-            $src = "../../web/" . $model->file_path;
+            $src = "../../../uploads/" . $model->file_path;
             if ($model->isVideo()) {
                 echo '<video width="640" height="480" controls>
                     <source src='. $src . '></video>';

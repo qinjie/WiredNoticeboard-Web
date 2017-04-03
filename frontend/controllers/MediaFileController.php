@@ -57,8 +57,7 @@ class MediaFileController extends Controller
         $searchModel = new MediaFileSearch();
         if (Yii::$app->user->identity->role == User::ROLE_ADMIN) {
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        }
-        else {
+        } else {
             $dataProvider = $searchModel->NewSearch(Yii::$app->request->queryParams, Yii::$app->user->id);
         }
         return $this->render('index', [
@@ -75,12 +74,11 @@ class MediaFileController extends Controller
     public function actionView($id)
     {
         $model = $this->findModel($id);
-        if (Yii::$app->user->id == $model->user_id  || Yii::$app->user->identity->role == User::ROLE_ADMIN){
+        if (Yii::$app->user->id == $model->user_id || Yii::$app->user->identity->role == User::ROLE_ADMIN) {
             return $this->render('view', [
                 'model' => $model,
             ]);
-        }
-        else {
+        } else {
             throw new ForbiddenHttpException('You are not allowed to edit this article.');
         }
 
@@ -95,9 +93,9 @@ class MediaFileController extends Controller
     {
         $model = new MediaFile();
 
-        if ($model->load(Yii::$app->request->post()) ) {
+        if ($model->load(Yii::$app->request->post())) {
             $model->file = UploadedFile::getInstance($model, 'file');
-            if(empty($model->file)) {
+            if (empty($model->file)) {
                 var_dump("haha");
                 return false;
             }
@@ -108,15 +106,14 @@ class MediaFileController extends Controller
                 $model->duration = gmdate("H:i:s", $model->duration);
             else
                 $model->duration = gmdate("H:i:s", 1);
-            $model->file_path = 'uploads/'.$demo.'.'.$model->file->extension;
+            $model->file_path = $demo . '.' . $model->file->extension;
             $model->file->saveAs($model->file_path);
 //            var_dump($this->getDuration($model->file_path));
 //            return;
-            if ($model->isVideo()){
+            if ($model->isVideo()) {
                 $model->width = 640;
                 $model->height = 480;
-            }
-            else {
+            } else {
                 $model->width = getimagesize($model->file_path)[0];
                 $model->height = getimagesize($model->file_path)[1];
             }
@@ -139,27 +136,26 @@ class MediaFileController extends Controller
     {
         $model = $this->findModel($id);
 
-        if (Yii::$app->user->id == $model->user_id  || Yii::$app->user->identity->role == User::ROLE_ADMIN){
-            if ($model->load(Yii::$app->request->post()) ) {
+        if (Yii::$app->user->id == $model->user_id || Yii::$app->user->identity->role == User::ROLE_ADMIN) {
+            if ($model->load(Yii::$app->request->post())) {
                 $upload_image = UploadedFile::getInstance($model, 'file');
                 $model->user_id = Yii::$app->user->identity->getId();
-                if(!empty($upload_image)){
+                if (!empty($upload_image)) {
                     $model->file = $upload_image;
                     $model->extension = $model->file->extension;
                     $demo = uniqid($model->user_id . "_");
-                    $model->file_path = 'uploads/'.$demo.'.'.$model->file->extension;
+                    $model->file_path = $demo . '.' . $model->file->extension;
                     $model->file->saveAs($model->file_path);
                     if ($model->isVideo())
                         $model->duration = gmdate("H:i:s", $model->duration);
                     else
                         $model->duration = gmdate("H:i:s", 1);
 
-                    if ($model->isVideo()){
+                    if ($model->isVideo()) {
                         $model->width = 640;
                         $model->height = 480;
 
-                    }
-                    else {
+                    } else {
                         $model->width = getimagesize($model->file_path)[0];
                         $model->height = getimagesize($model->file_path)[1];
                     }
@@ -172,8 +168,7 @@ class MediaFileController extends Controller
                     'model' => $model,
                 ]);
             }
-        }
-        else {
+        } else {
             throw new ForbiddenHttpException('You are not allowed to edit this article.');
         }
 
@@ -188,11 +183,10 @@ class MediaFileController extends Controller
     public function actionDelete($id)
     {
         $model = $this->findModel($id);
-        if (Yii::$app->user->id == $model->user_id  || Yii::$app->user->identity->role == User::ROLE_ADMIN){
+        if (Yii::$app->user->id == $model->user_id || Yii::$app->user->identity->role == User::ROLE_ADMIN) {
             $model->delete();
             return $this->redirect(['index']);
-        }
-        else {
+        } else {
             throw new ForbiddenHttpException('You are not allowed to delete this article.');
         }
     }
@@ -212,20 +206,21 @@ class MediaFileController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
     private function makeThumbnails($imgName)
     {
-        $uploadsPath = "uploads/";
-        $imgPath = $uploadsPath.$imgName;
+        $uploadsPath = Yii::getAlias('@uploads') . '/';
+        $imgPath = $uploadsPath . $imgName;
         $thumb_before_word = "thumbnail_";
         $arr_image_details = getimagesize($imgPath);
         $original_width = $arr_image_details[0];
         $original_height = $arr_image_details[1];
-        if ($original_width > 2*$original_height) {
+        if ($original_width > 2 * $original_height) {
             $thumbnail_width = 200;
-            $thumbnail_height = intval($original_height*200/$original_width);
+            $thumbnail_height = intval($original_height * 200 / $original_width);
         } else {
             $thumbnail_height = 100;
-            $thumbnail_width = intval($original_width*100/$original_height);
+            $thumbnail_width = intval($original_width * 100 / $original_height);
         }
         if ($arr_image_details[2] == 1) {
             $imgt = "imagegif";
@@ -242,33 +237,35 @@ class MediaFileController extends Controller
         if ($imgt) {
             $old_image = $imgcreatefrom($imgPath);
             $new_image = imagecreatetruecolor($thumbnail_width, $thumbnail_height);
-            imagealphablending( $new_image, false );
-            imagesavealpha( $new_image, true );
+            imagealphablending($new_image, false);
+            imagesavealpha($new_image, true);
             imagecopyresized($new_image, $old_image, 0, 0, 0, 0, $thumbnail_width, $thumbnail_height, $original_width, $original_height);
-            $imgt($new_image, $uploadsPath.$thumb_before_word.$imgName);
+            $imgt($new_image, $uploadsPath . $thumb_before_word . $imgName);
         }
     }
 
-    function getDuration($file){
-        if (file_exists($file)){
+    function getDuration($file)
+    {
+        if (file_exists($file)) {
             ## open and read video file
             $handle = fopen($file, "r");
 ## read video file size
             $contents = fread($handle, filesize($file));
             fclose($handle);
-            $make_hexa = hexdec(bin2hex(substr($contents,strlen($contents)-3)));
+            $make_hexa = hexdec(bin2hex(substr($contents, strlen($contents) - 3)));
 
 //            if (strlen($contents) > $make_hexa){
-                $pre_duration = hexdec(bin2hex(substr($contents,strlen($contents)-$make_hexa,3))) ;
-                $post_duration = $pre_duration/1000;
-                $timehours = $post_duration/3600;
-                $timeminutes =($post_duration % 3600)/60;
-                $timeseconds = ($post_duration % 3600) % 60;
-                $timehours = explode(".", $timehours);
-                $timeminutes = explode(".", $timeminutes);
-                $timeseconds = explode(".", $timeseconds);
-                $duration = $timehours[0]. ":" . $timeminutes[0]. ":" . $timeseconds[0];}
-            return $duration;
+            $pre_duration = hexdec(bin2hex(substr($contents, strlen($contents) - $make_hexa, 3)));
+            $post_duration = $pre_duration / 1000;
+            $timehours = $post_duration / 3600;
+            $timeminutes = ($post_duration % 3600) / 60;
+            $timeseconds = ($post_duration % 3600) % 60;
+            $timehours = explode(".", $timehours);
+            $timeminutes = explode(".", $timeminutes);
+            $timeseconds = explode(".", $timeseconds);
+            $duration = $timehours[0] . ":" . $timeminutes[0] . ":" . $timeseconds[0];
+        }
+        return $duration;
 //        }
 //        else {
 //            return false;

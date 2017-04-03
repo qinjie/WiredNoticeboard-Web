@@ -2,6 +2,7 @@
 namespace api\common\controllers;
 
 use common\models\User;
+use Yii;
 use yii\base\Exception;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
@@ -24,6 +25,34 @@ class CustomActiveController extends ActiveController
         //-- Include pagination information directly to simplify the client development work
         'collectionEnvelope' => 'items',
     ];
+
+    ## Add authentication
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+
+        # Allow two types of Authentication: Basic & Token
+        $behaviors['authenticator'] = [
+            'class' => CompositeAuth::className(),
+            'except' => ['index', 'view', 'search'],
+            'authMethods' => [
+                # Add following key-value pair in HTTP header where username:password is 64bit-encoded
+                # Authorization     Basic <username:password>
+                [
+                    'class' => HttpBasicAuth::className(),
+                    'auth' => [$this, 'auth'],
+                ],
+                # Append following behind URL while making request
+                # ?access-token=<token>     ?others&access-token=<token>
+                QueryParamAuth::className(),
+                # Add following key-value pair in HTTP header
+                # Authorization     Bearer <token>
+                HttpBearerAuth::className(),
+            ],
+        ];
+
+        return $behaviors;
+    }
 
     # Used by HttpBasicAuth
     public function auth($username, $password)

@@ -19,7 +19,7 @@ class Device extends \common\models\Device
 
     public function extraFields()
     {
-        $new = ['deviceMedia', 'media'];
+        $new = ['deviceMedia', 'media', 'playlist'];
         $fields = array_merge(parent::fields(), $new);
         return $fields;
     }

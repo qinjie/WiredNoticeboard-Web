@@ -19,18 +19,18 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php
         foreach ($device as $key => $value){
             if ($value->mediaFile->isVideo()) {
-                $src ='../../file_video.png';
+                $src ='../file_video.png';
                 $type = 'video';
                 $url = $value->mediaFile->file_path;
             }
             else {
                 if ($value->mediaFile->isPdf()) {
-                    $url = Html::encode("../../".$value->mediaFile->file_path);
+                    $url = Html::encode("../uploads/".$value->mediaFile->file_path);
                     $src ='../../pdf.png';
                     $type = 'pdf';
                 }
                 else {
-                    $src = Html::encode("../../".$value->mediaFile->file_path);
+                    $src = Html::encode("../uploads/".$value->mediaFile->file_path);
                     $type = "img";
                     $url = $src;
                 }
