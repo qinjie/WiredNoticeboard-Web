@@ -13,7 +13,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-<!--    --><?//= $form->field($model, 'duration', ['options' => ['name' => 'f_du']]) ?>
+
 
     <?php
         if ($model->isNewRecord) {
@@ -53,7 +53,6 @@ use yii\widgets\ActiveForm;
     ?>
 
 
-<!--    <button onclick="myFunction()">Get duration</button>-->
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'id' => 'btn-create']) ?>
     </div>

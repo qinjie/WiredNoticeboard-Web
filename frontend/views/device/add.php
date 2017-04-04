@@ -33,7 +33,6 @@ $this->params['breadcrumbs'][] = $this->title;
         )->label("Media files's name")
         ?>
 
-        <?= $form->field($model, 'iteration')->textInput() ?>
 
         <div class="form-group">
             <?= Html::submitButton('Create', ['class' => 'btn btn-success']) ?>
