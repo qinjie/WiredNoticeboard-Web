@@ -18,6 +18,38 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'mac')->textInput(['maxlength' => true]) ?>
 
+    <?= $form->field($model, 'turn_on_time')->widget(\kartik\time\TimePicker::classname(),
+    [
+        'name' => 't2',
+        'pluginOptions' => [
+//        'showSeconds' => true,
+        'showMeridian' => false,
+        'minuteStep' => 30,
+        'secondStep' => 0,
+    ]]
+    ) ?>
+    <?= $form->field($model, 'turn_off_time')->widget(\kartik\time\TimePicker::classname(),
+        [
+            'name' => 't2',
+            'pluginOptions' => [
+//        'showSeconds' => true,
+                'showMeridian' => false,
+                'minuteStep' => 30,
+                'secondStep' => 0,
+            ]]
+    ) ?>
+    <?= $form->field($model, 'slide_timing')->widget(\kartik\time\TimePicker::classname(),
+        [
+//            'name' => 't2',
+            'pluginOptions' => [
+                'showSeconds' => true,
+                'showMeridian' => false,
+                'minuteStep' => 1,
+                'secondStep' => 1,
+            ]]
+    ) ?>
+
+
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>

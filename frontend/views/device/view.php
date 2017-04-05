@@ -37,6 +37,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'user.username',
                 'label' => "Username"
             ],
+             'turn_on_time',
+             'turn_off_time',
+             'slide_timing',
             'created_at',
             'updated_at',
         ],

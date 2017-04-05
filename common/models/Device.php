@@ -37,6 +37,8 @@ class Device extends \yii\db\ActiveRecord
         return [
             [['name', 'user_id', 'mac'], 'required'],
             [['user_id'], 'integer'],
+            [['mac'], 'string'],
+            [['created_at', 'updated_at', 'turn_on_time', 'turn_off_time', 'slide_timing'], 'safe'],
             [['created_at', 'updated_at'], 'safe'],
             [['name'], 'string', 'max' => 25],
             [['remark'], 'string', 'max' => 200],
@@ -55,6 +57,9 @@ class Device extends \yii\db\ActiveRecord
             'remark' => 'Remark',
             'mac' => 'Serial Number',
             'user_id' => 'User ID',
+            'turn_on_time' => 'Turn On Time',
+            'turn_off_time' => 'Turn Off Time',
+            'slide_timing' => 'Slide Timing',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
@@ -82,6 +87,14 @@ class Device extends \yii\db\ActiveRecord
     public function getDeviceTokens()
     {
         return $this->hasMany(DeviceToken::className(), ['device_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getDeviceSettings()
+    {
+        return $this->hasMany(DeviceSetting::className(), ['device_id' => 'id']);
     }
 
     public function getMedia()
