@@ -6,7 +6,7 @@ _host = 'localhost'
 _user = ''
 _password = ''
 _database = 'test'#'wired-noticeboard'
-_dir_contain_file = r'C:\Users\HoangHiep\Desktop\Python\New folder'
+_dir_contain_file = r'/var/www/html/WiredNoticeboard-Web/uploads'
 
 def get_filepaths(directory):
     file_paths = []  # List which will store all of the full filepaths.
