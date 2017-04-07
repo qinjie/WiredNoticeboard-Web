@@ -38,16 +38,8 @@ use yii\widgets\ActiveForm;
                 'secondStep' => 0,
             ]]
     ) ?>
-    <?= $form->field($model, 'slide_timing')->widget(\kartik\time\TimePicker::classname(),
-        [
-//            'name' => 't2',
-            'pluginOptions' => [
-                'showSeconds' => true,
-                'showMeridian' => false,
-                'minuteStep' => 1,
-                'secondStep' => 1,
-            ]]
-    ) ?>
+
+    <?= $form->field($model, 'slide_timing')->textInput(['maxlength' => true]) ?>
 
 
     <div class="form-group">

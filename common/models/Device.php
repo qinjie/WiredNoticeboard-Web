@@ -39,9 +39,9 @@ class Device extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'user_id', 'mac'], 'required'],
-            [['user_id'], 'integer'],
+            [['user_id', 'slide_timing'], 'integer'],
             [['mac'], 'string'],
-            [['created_at', 'updated_at', 'turn_on_time', 'turn_off_time', 'slide_timing'], 'safe'],
+            [['created_at', 'updated_at', 'turn_on_time', 'turn_off_time'], 'safe'],
             [['name'], 'string', 'max' => 25],
             [['remark'], 'string', 'max' => 200],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
