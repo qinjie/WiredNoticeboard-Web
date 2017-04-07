@@ -3,9 +3,9 @@ import os
 
 
 _host = 'localhost'
-_user = ''
-_password = ''
-_database = 'test'#'wired-noticeboard'
+_user = 'root'
+_password = 'abcd1234'
+_database = 'wired-noticeboard'
 _dir_contain_file = r'/var/www/html/WiredNoticeboard-Web/uploads'
 
 def get_filepaths(directory):
