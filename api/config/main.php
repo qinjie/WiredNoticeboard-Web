@@ -81,6 +81,7 @@ return [
                     'extraPatterns' => [
                         'POST enroll' => 'enroll',
                         'GET playlist' => 'playlist',
+                        'GET profile' => 'profile',
                         'GET download-file/{filename}' => 'download-file',
                     ],
                     'tokens' => [

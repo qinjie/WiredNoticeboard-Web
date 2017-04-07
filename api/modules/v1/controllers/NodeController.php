@@ -12,9 +12,9 @@ namespace api\modules\v1\controllers;
 use api\common\controllers\CustomActiveController;
 use common\components\AccessRule;
 use common\components\TokenHelper;
-use common\models\Device;
-use common\models\DeviceToken;
-use common\models\UserToken;
+use api\common\models\Device;
+use api\common\models\DeviceToken;
+use api\common\models\UserToken;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\auth\HttpBearerAuth;
@@ -38,7 +38,7 @@ class NodeController extends CustomActiveController
 
         # Use custom authentication through device-token
         $behaviors['authenticator']['except'] = [
-            'enroll', 'playlist', 'download-file'
+            'enroll', 'playlist', 'download-file', 'profile'
         ];
 
         $behaviors['access'] = [
@@ -48,7 +48,7 @@ class NodeController extends CustomActiveController
             ],
             'rules' => [
                 [
-                    'actions' => ['enroll', 'playlist', 'download-file'],
+                    'actions' => ['enroll', 'playlist', 'download-file', 'profile'],
                     'allow' => true,
                     'roles' => ['?'],
                 ],
@@ -64,7 +64,7 @@ class NodeController extends CustomActiveController
     public function actionEnroll()
     {
         $headers = Yii::$app->request->headers;
-        if(!isset($headers['Mac']))
+        if (!isset($headers['Mac']))
             throw new HttpException(400, 'Missing <Mac> attribute in header.');
         $token = $headers['Mac'];
         $model = Device::findOne(['mac' => $token]);
@@ -73,17 +73,29 @@ class NodeController extends CustomActiveController
         }
         DeviceToken::deleteAll(['device_id' => $model->id]);
         $token = TokenHelper::createDeviceToken($model->id);
-        return [
-            'user_id' => $model->user_id,
-            'device_id' => $model->id,
-            'token' => $token->token,
-        ];
+
+        $array = $model->toArray();
+        $array['token'] = $token->token;
+        return $array;
+    }
+
+    public function actionProfile()
+    {
+        $headers = Yii::$app->request->headers;
+        if (!isset($headers['Token']))
+            throw new HttpException(400, 'Missing <Token> attribute in header.');
+        $token = $headers['Token'];
+        $model = DeviceToken::findOne(['token' => $token]);
+        if (!$model) {
+            throw new UnauthorizedHttpException('You are not authorized');
+        }
+        return $model->device;
     }
 
     public function actionPlaylist()
     {
         $headers = Yii::$app->request->headers;
-        if(!isset($headers['Token']))
+        if (!isset($headers['Token']))
             throw new HttpException(400, 'Missing <Token> attribute in header.');
         $token = $headers['Token'];
         $model = DeviceToken::findOne(['token' => $token]);
@@ -96,7 +108,7 @@ class NodeController extends CustomActiveController
     public function actionDownloadFile($filename)
     {
         $headers = Yii::$app->request->headers;
-        if(!isset($headers['Token']))
+        if (!isset($headers['Token']))
             throw new HttpException(400, 'Missing <Token> attribute in header.');
         $token = $headers['Token'];
         $model = DeviceToken::findOne(['token' => $token]);

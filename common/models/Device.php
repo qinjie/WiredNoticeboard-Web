@@ -11,6 +11,9 @@ use Yii;
  * @property string $name
  * @property string $remark
  * @property integer $user_id
+ * @property string $turn_on_time
+ * @property string $turn_off_time
+ * @property string $slide_timing
  * @property string $created_at
  * @property string $updated_at
  *
@@ -39,7 +42,6 @@ class Device extends \yii\db\ActiveRecord
             [['user_id'], 'integer'],
             [['mac'], 'string'],
             [['created_at', 'updated_at', 'turn_on_time', 'turn_off_time', 'slide_timing'], 'safe'],
-            [['created_at', 'updated_at'], 'safe'],
             [['name'], 'string', 'max' => 25],
             [['remark'], 'string', 'max' => 200],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
@@ -87,14 +89,6 @@ class Device extends \yii\db\ActiveRecord
     public function getDeviceTokens()
     {
         return $this->hasMany(DeviceToken::className(), ['device_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getDeviceSettings()
-    {
-        return $this->hasMany(DeviceSetting::className(), ['device_id' => 'id']);
     }
 
     public function getMedia()
