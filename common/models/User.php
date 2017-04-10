@@ -207,4 +207,21 @@ class User extends ActiveRecord implements IdentityInterface
     public function getRole(){
         $this->role;
     }
+
+    public function getStatusName()
+    {
+        switch ($this->status) {
+            case 0: return 'Deleted';
+            case 1: return 'Pending';
+            case 10: return 'Active';
+        }
+    }
+
+    public function getRoleName()
+    {
+        switch ($this->role) {
+            case 10: return 'Customer';
+            case 40: return 'Admin';
+        }
+    }
 }
