@@ -38,7 +38,7 @@ class NodeController extends CustomActiveController
 
         # Use custom authentication through device-token
         $behaviors['authenticator']['except'] = [
-            'enroll', 'playlist', 'download-file', 'profile'
+            'enroll', 'playlist', 'download-file', 'profile', 'reboot'
         ];
 
         $behaviors['access'] = [
@@ -48,7 +48,7 @@ class NodeController extends CustomActiveController
             ],
             'rules' => [
                 [
-                    'actions' => ['enroll', 'playlist', 'download-file', 'profile'],
+                    'actions' => ['enroll', 'playlist', 'download-file', 'profile', 'reboot'],
                     'allow' => true,
                     'roles' => ['?'],
                 ],
@@ -123,5 +123,21 @@ class NodeController extends CustomActiveController
         } else {
             throw new HttpException(404, 'The requested item could not be found.');
         }
+    }
+    public function actionReboot(){
+        $headers = Yii::$app->request->headers;
+        if (!isset($headers['Token']))
+            throw new HttpException(400, 'Missing <Token> attribute in header.');
+        $token = $headers['Token'];
+        $model = DeviceToken::findOne(['token' => $token]);
+        if (!$model) {
+            throw new UnauthorizedHttpException('You are not authorized');
+        }
+        if ($model->device->to_reboot){
+            $model->device->to_reboot = 0;
+            $model->device->save();
+            return "Reboot successfully.";
+        }
+        return "Can't reboot.";
     }
 }

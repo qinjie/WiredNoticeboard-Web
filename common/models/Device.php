@@ -39,7 +39,7 @@ class Device extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'user_id', 'mac'], 'required'],
-            [['user_id', 'slide_timing'], 'integer'],
+            [['user_id', 'slide_timing', 'to_reboot'], 'integer'],
             [['mac'], 'string'],
             [['created_at', 'updated_at', 'turn_on_time', 'turn_off_time'], 'safe'],
             [['name'], 'string', 'max' => 25],
@@ -62,6 +62,7 @@ class Device extends \yii\db\ActiveRecord
             'turn_on_time' => 'Turn On Time',
             'turn_off_time' => 'Turn Off Time',
             'slide_timing' => 'Slide Timing',
+            'to_reboot' => 'To Reboot',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];

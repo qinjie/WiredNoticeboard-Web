@@ -80,6 +80,7 @@ return [
                     'controller' => 'v1/node',
                     'extraPatterns' => [
                         'POST enroll' => 'enroll',
+                        'POST reboot' => 'reboot',
                         'GET playlist' => 'playlist',
                         'GET profile' => 'profile',
                         'GET download-file/{filename}' => 'download-file',
