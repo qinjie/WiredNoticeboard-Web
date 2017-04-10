@@ -5,7 +5,7 @@ import os
 _host = 'localhost'
 _user = 'root'
 _password = 'abcd1234'
-_database = 'wired-noticeboard'
+_database = 'test'#'wired_noticeboard'
 _dir_contain_file = r'/var/www/html/WiredNoticeboard-Web/uploads'
 
 def get_filepaths(directory):
@@ -30,14 +30,14 @@ if __name__ == '__main__' :
                                  database=_database)
     cursor = connection.cursor()
 
-    sql = 'SELECT media_file.file_path FROM media_file'
+    sql = 'SELECT * FROM media_file'
     cursor.execute(sql)
     result = cursor.fetchall()
-
+   # print(result)
     list_file = get_filepaths(_dir_contain_file)
     cc = []
     for a in result :
-        cc.append(a)
+        cc.append(a[6])
 
     for file in list_file :
         if file not in cc :
