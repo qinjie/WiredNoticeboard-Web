@@ -40,6 +40,10 @@ $this->params['breadcrumbs'][] = $this->title;
              'turn_on_time',
              'turn_off_time',
              'slide_timing',
+            [
+                'attribute' => 'to_reboot',
+                'value' => ($model->to_reboot ?"Yes" : "No"  ),
+            ],
             'created_at',
             'updated_at',
         ],

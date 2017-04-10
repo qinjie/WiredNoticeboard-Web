@@ -41,6 +41,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'slide_timing')->textInput(['maxlength' => true]) ?>
 
+    <?= $form->field($model, 'to_reboot')->radioList([0 => 'No', 1 => 'Yes']) ?>
+
+
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

@@ -37,6 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
              'turn_on_time',
              'turn_off_time',
              'slide_timing',
+//            'to_reboot',
 //             'updated_at',
 
             ['class' => 'yii\grid\ActionColumn'],

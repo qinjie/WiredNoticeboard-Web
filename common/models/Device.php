@@ -62,7 +62,7 @@ class Device extends \yii\db\ActiveRecord
             'turn_on_time' => 'Turn On Time',
             'turn_off_time' => 'Turn Off Time',
             'slide_timing' => 'Slide Timing',
-            'to_reboot' => 'To Reboot',
+            'to_reboot' => 'Do you want to Reboot this device?',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
