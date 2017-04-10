@@ -45,6 +45,10 @@ class LoginForm extends Model
             if (!$user || !$user->validatePassword($this->password)) {
                 $this->addError($attribute, 'Incorrect username or password.');
             }
+
+            if ($user->status == User::STATUS_PENDING){
+                $this->addError($attribute, 'Your account is pending approval.');
+            }
         }
     }
 

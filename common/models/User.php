@@ -26,6 +26,7 @@ use yii\web\IdentityInterface;
 class User extends ActiveRecord implements IdentityInterface
 {
     const STATUS_DELETED = 0;
+    const STATUS_PENDING = 1;
     const STATUS_ACTIVE = 10;
 
     const ROLE_CUSTOMER = 10;
@@ -93,7 +94,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findByUsername($username)
     {
-        return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
+        return static::findOne(['username' => $username]);
     }
 
     /**
