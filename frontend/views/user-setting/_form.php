@@ -14,13 +14,13 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'open_enroll')->dropDownList(['0' => 'No', '1' => 'Yes']) ?>
 
-    <div class="row">
+    <div class="row" style="display: flex;">
 
         <div class="col-md-9">
             <?= $form->field($model, 'enroll_code')->textInput(['maxlength' => true, 'readOnly' => true]) ?>
         </div>
         <div class="col-md-3">
-            <?= Html::button("Re-generate code",['class' =>  'btn btn-default', 'onclick' => 'test()', 'style' => 'margin-top: 25px;']) ?>
+            <?= Html::button("Re-generate code",['class' =>  'btn btn-default', 'onclick' => 'test()', 'style' => 'margin-bottom:15px; position: absolute; bottom: 0;']) ?>
         </div>
 
     </div>
