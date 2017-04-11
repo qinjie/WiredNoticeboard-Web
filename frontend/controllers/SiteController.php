@@ -4,6 +4,7 @@ namespace frontend\controllers;
 use common\components\AccessRule;
 use common\models\form\ChangePasswordForm;
 use common\models\User;
+use common\models\UserSetting;
 use Yii;
 use yii\base\Exception;
 use yii\base\InvalidParamException;
@@ -40,7 +41,7 @@ class SiteController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['index','change-password', 'account'],
+                        'actions' => ['index','change-password', 'account', 'user-setting'],
                         'allow' => true,
                         'roles' => [\common\models\User::ROLE_CUSTOMER, \common\models\User::ROLE_ADMIN],
                     ],
@@ -148,8 +149,10 @@ class SiteController extends Controller
     public function actionAccount()
     {
         try {
+            $id = Yii::$app->user->identity->getId();
             return $this->render('account', [
-                'model' => User::findOne(Yii::$app->user->identity->getId()),
+                'model' => User::findOne($id),
+                'setting' => UserSetting::findOne(['user_id' => $id])
             ]);
         } catch (Exception $e) {
             throw new BadRequestHttpException($e->getMessage());
@@ -176,10 +179,13 @@ class SiteController extends Controller
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post())) {
             if ($user = $model->signup()) {
+
                 if (Yii::$app->getUser()->login($user)) {
+                    Yii::$app->session->setFlash('success', 'Pending account approval.');
                     return $this->goHome();
                 }
             }
+
         }
 
         return $this->render('signup', [
@@ -250,5 +256,11 @@ class SiteController extends Controller
                 'model' => $model,
             ]);
         }
+    }
+
+    public function actionUserSetting(){
+        $model = UserSetting::findOne(['user_id' => Yii::$app->user->identity->getId()]);
+        $this->redirect(['/user-setting/update','id' => $model->id]);
+
     }
 }

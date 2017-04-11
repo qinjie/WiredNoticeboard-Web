@@ -1,6 +1,7 @@
 <?php
 namespace frontend\models;
 
+use common\models\UserSetting;
 use yii\base\Model;
 use common\models\User;
 
@@ -53,7 +54,14 @@ class SignupForm extends Model
         $user->setPassword($this->password);
         $user->status = 1;
         $user->generateAuthKey();
+        if ($user->save()){
+            $user_setting = new UserSetting(['user_id' => $user->id]);
+            $user_setting->enroll_code = \Yii::$app->security->generateRandomString(12);
+            $user_setting->save();
+            return $user;
+        }
+        return null;
         
-        return $user->save() ? $user : null;
+//        return $user->save() ? $user : null;
     }
 }

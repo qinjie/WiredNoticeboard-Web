@@ -20,7 +20,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <!--        = Html::a('Change Email', ['change-email'], ['class' => 'btn btn-primary'])-->
         <?= Html::a('Change Password', ['change-password'], ['class' => 'btn btn-primary']) ?>
     </p>
 
@@ -29,6 +28,20 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'username',
             'email',
+        ],
+    ]) ?>
+    <p>
+        <?= Html::a('Change User Setting', ['user-setting'], ['class' => 'btn btn-primary']) ?>
+    </p>
+    <?= DetailView::widget([
+        'model' => $setting,
+        'attributes' => [
+//            'user_id',
+            'enroll_code', [
+                'attribute' => 'open_enroll',
+                'value' => ($setting->open_enroll ?"Yes" : "No"  ),
+            ],
+
         ],
     ]) ?>
 
