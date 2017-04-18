@@ -12,7 +12,6 @@ use yii\helpers\Html;
 /* @var $model common\models\DeviceMedia */
 
 $this->title = 'Add file to playlist';
-$this->params['breadcrumbs'][] = ['label' => 'Device Media', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="device-media-create">
