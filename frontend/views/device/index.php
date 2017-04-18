@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => 'user.username',
             ],
             'mac',
-            'created_at',
+//            'created_at',
              'turn_on_time',
              'turn_off_time',
              'slide_timing',

@@ -12,8 +12,8 @@ $this->title = 'Wired Noticeboard';
 
         <p class="lead" style="color: white">Start something that matters</p>
 
-        <p><a class="btn btn-lg btn-success" href="device/">Get started with creating your device</a></p>
-        <p><a class="btn btn-lg btn-success" href="media-file/">Get started with creating your media files</a></p>
+        <p><a class="btn btn-lg btn-success" href="device/">Manage your devices</a></p>
+        <p><a class="btn btn-lg btn-success" href="media-file/">Manage your media files</a></p>
     </div>
 
 
