@@ -1,9 +1,12 @@
 <?php
 return [
+    'name' => 'Wired Noticeboard',
+    'timeZone' => 'Asia/Singapore',
+    'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'components' => [
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=localhost;dbname=yii2advanced',
+            'dsn' => 'mysql:host=localhost;dbname=wired_noticeboard',
             'username' => 'root',
             'password' => '',
             'charset' => 'utf8',

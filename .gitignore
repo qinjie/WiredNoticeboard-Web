@@ -28,5 +28,6 @@ composer.phar
 phpunit.phar
 # local phpunit config
 /phpunit.xml
-#upload file
-/frontend/web/uploads
+#upload files
+/uploads
+

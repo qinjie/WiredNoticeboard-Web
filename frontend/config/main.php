@@ -18,8 +18,7 @@ return [
         'user' => [
             'identityClass' => 'common\models\User',
             'enableAutoLogin' => true,
-            'identityCookie' =>
-                [
+            'identityCookie' => [
                     'name' => '_identity-frontend',
                     'httpOnly' => true
                 ],
